@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+O'zBilim | {{ profile_user.get_full_name }}
+{% endblock %}
+
+{% block main %}
+<div class="container my-5">
+    <!-- Profil Header -->
+    <div class="bg-white p-4 rounded shadow-sm">
+        <div class="row align-items-center text-center text-md-start">
+            <div class="col-12 col-md-2 mb-3 mb-md-0">
+                <img src="{% if profile_user.avatar %}{{ profile_user.avatar.url }}{% else %}{% static 'uploads/image.png' %}{% endif %}"
+                     alt="avatar" class="rounded-circle border border-2 shadow-sm mx-auto d-block" width="100"
+                     height="100">
+            </div>
+            <div class="col-12 col-md-10">
+                <h3 class="mb-1 d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                    {{ profile_user.get_full_name }}
+                    {% if profile_user.is_verified %}
+                    <span class="verified-badge"><i class="bi bi-patch-check-fill text-primary fs-5"></i></span>
+                    {% endif %}
+                </h3>
+                <p class="text-muted mb-2">@{{ profile_user.username }}</p>
+
+                {% if profile_user.about %}
+                <p class="text-secondary mt-2">{{ profile_user.about }}</p>
+                {% else %}
+                <p class="text-muted fst-italic mt-2">Foydalanuvchi haqida ma'lumot mavjud emas.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Maqolalar -->
+    <div class="bg-white p-4 rounded shadow-sm mt-4">
+        <h5 class="text-primary mb-3">
+            <i class="bi bi-journal-text me-2"></i> Muallif maqolalari
+        </h5>
+
+        {% if page_obj %}
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+            {% for article in page_obj %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary">{{ article.title }}</h6>
+                        <p class="card-text text-muted small mb-2">
+                            <i class="bi bi-calendar-event me-1"></i> {{ article.created_at|date:"Y-m-d" }}
+                            &nbsp;|&nbsp;
+                            <i class="bi bi-eye me-1"></i> {{ article.views }} marta
+                        </p>
+                        <p class="card-text">{{ article.content|truncatewords:20 }}</p>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <a href="{% url 'detail' article.pk %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-book me-1"></i> Batafsil
+                            </a>
+
+                            {% if request.user == article.author or request.user.is_superuser %}
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'update-article' article.pk %}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil-square"></i> Tahrirlash
+                                </a>
+                                <a href="{% url 'delete-article' article.pk %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> O‘chirish
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="fst-italic text-muted">Hozircha hech qanday maqola mavjud emas.</p>
+        {% endif %}
+    </div>
+
+    <!-- Sahifalash -->
+    {% if is_paginated %}
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                {% if page_obj.has_previous %}
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                    <i class="bi bi-arrow-left-short"></i> Oldingi
+                </a>
+                {% else %}
+                <span class="page-link"><i class="bi bi-arrow-left-short"></i> Oldingi</span>
+                {% endif %}
+            </li>
+
+            {% for page in page_obj.paginator.page_range %}
+            {% if page_obj.number == page %}
+            <li class="page-item active"><span class="page-link">{{ page }}</span></li>
+            {% elif page > page_obj.number|add:"-3" and page < page_obj.number|add:"3" %}
+            <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+            {% endif %}
+            {% endfor %}
+
+            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                {% if page_obj.has_next %}
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                    Keyingi <i class="bi bi-arrow-right-short"></i>
+                </a>
+                {% else %}
+                <span class="page-link">Keyingi <i class="bi bi-arrow-right-short"></i></span>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

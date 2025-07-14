@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}O'zBilim | Sozlamalar{% endblock %}
+
+{% block main %}
+<div class="container my-5">
+    <h3 class="text-center mb-4 text-primary">Profil sozlamalari</h3>
+
+    <div class="row g-4">
+
+        <!-- 1. Foydalanuvchi ma'lumotlarini tahrirlash -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3 text-primary">Shaxsiy ma'lumotlar</h5>
+                    <form method="post" action="{% url 'settings' %}">
+                        {% csrf_token %}
+                        {{ profile_form.non_field_errors }}
+                        {% for field in profile_form %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" name="submit_profile" class="btn btn-primary">Saqlash</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Profil rasmini yangilash yoki o‘chirish -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3 text-primary">Profil rasmi</h5>
+                    <form method="post" enctype="multipart/form-data" action="{% url 'settings' %}">
+                        {% csrf_token %}
+                        {{ avatar_form.non_field_errors }}
+                        <div class="mb-3 text-center">
+                            <img src="{% if request.user.avatar %}{{ request.user.avatar.url }}{% else %}{% static 'uploads/image.png' %}{% endif %}"
+                                 class="rounded-circle shadow-sm" width="100" height="100" alt="Avatar">
+                        </div>
+                        {% for field in avatar_form %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-start">
+                            <button type="submit" name="submit_avatar" class="btn btn-primary w-100 w-sm-auto">Rasmni yangilash</button>
+                            <button type="submit" name="remove_avatar" class="btn btn-outline-danger w-100 w-sm-auto">Rasmni o‘chirish</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Parolni o‘zgartirish -->
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3 text-primary">Parolni o‘zgartirish</h5>
+                    <form method="post" action="{% url 'settings' %}">
+                        {% csrf_token %}
+                        {{ password_form.non_field_errors }}
+                        {% for field in password_form %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" name="submit_password" class="btn btn-primary">Parolni yangilash</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Hisobni o‘chirish -->
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3 text-danger">Hisobni o‘chirish</h5>
+                    <p class="text-muted">Agar hisobingiz o‘chirilsa, barcha ma’lumotlaringiz (maqola, izoh, avatar)
+                        doimiy tarzda yo‘qoladi. Bu amal ortga qaytarilmaydi!</p>
+                    <form method="post" action="{% url 'settings' %}">
+                        {% csrf_token %}
+                        <button type="submit" name="submit_delete" class="btn btn-outline-danger">
+                            <i class="bi bi-trash me-1"></i> Hisobni o‘chirish
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}

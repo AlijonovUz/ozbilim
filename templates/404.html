@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}404 - Sahifa topilmadi{% endblock %}
+
+{% block main %}
+<div class="d-flex align-items-center justify-content-center text-center error-container py-5">
+    <div>
+        <div class="error-icon mb-3">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <div class="error-code text-primary">404</div>
+        <h3 class="mb-3">Sahifa topilmadi</h3>
+        <p class="text-muted mb-4">Kechirasiz, siz izlagan sahifa mavjud emas yoki o‘chirilgan bo‘lishi mumkin.</p>
+        <a href="{% url 'home' %}" class="btn btn-primary btn-home">
+            <i class="bi bi-house-door me-1"></i> Bosh sahifaga qaytish
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-container {
+        min-height: 70vh;
+    }
+    .error-icon {
+        font-size: 6rem;
+        color: #0d6efd;
+    }
+    .error-code {
+        font-size: 5rem;
+        font-weight: 700;
+    }
+    .btn-home {
+        padding: 0.6rem 1.5rem;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}

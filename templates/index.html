@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+O‘zBilim | Bosh sahifa
+{% endblock title %}
+
+{% block main %}
+<div class="search-box text-center">
+    <form id="searchForm" method="get" action="{% url 'search' %}">
+        <input id="searchInput" name="q" type="text" placeholder="Qidirish..."/>
+        <button type="submit"><i class="bi bi-search"></i></button>
+    </form>
+</div>
+
+<div class="container pb-4">
+    {% if articles %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-3">
+        {% for article in articles %}
+        <div class="col">
+            <div class="card p-3 h-100 shadow-sm border-0">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="{% if article.author.avatar %}{{ article.author.avatar.url }}{% else %}{% static 'uploads/image.png' %}{% endif %}"
+                             width="50" class="rounded-circle me-2"/>
+                        <div>
+                            <div class="fw-bold">
+                                {{ article.author.get_full_name }}
+                                {% if article.author.is_verified %}
+                                <span class="verified-badge"><i class="bi bi-patch-check-fill text-primary"></i></span>
+                                {% endif %}
+                            </div>
+                            <div class="text-muted">
+                                <a href="{% url 'profile' article.author.username %}">@{{ article.author.username }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="card-title text-primary mt-2">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.content|truncatechars:100 }}</p>
+                    <a href="{% url 'detail' article.pk %}" class="btn btn-primary mt-2 py-2">
+                        <i class="bi bi-book me-2"></i> Maqolani to‘liq o‘qish
+                    </a>
+
+                    <p class="card-text text-muted small mt-4 d-flex flex-wrap align-items-center">
+                        <span class="d-flex align-items-center me-2">
+                            <i class="bi bi-calendar-event me-1"></i>
+                            {{ article.created_at }}
+                        </span>
+                        <span class="mx-2">|</span>
+                        <span class="d-flex align-items-center">
+                            <i class="bi bi-eye me-1"></i>
+                            {{ article.views }} ta
+                        </span>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center text-muted py-5">
+        <i class="bi bi-folder-x" style="font-size: 3rem;"></i>
+        <p class="mt-3 fs-5">Maqolalar topilmadi.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% if is_paginated %}
+<nav class="mt-4">
+    <ul class="pagination">
+
+        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+            {% if page_obj.has_previous %}
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Oldingi</a>
+            {% else %}
+            <span class="page-link">Oldingi</span>
+            {% endif %}
+        </li>
+
+        {% for page in page_obj.paginator.page_range %}
+        {% if page_obj.number == page %}
+        <li class="page-item active">
+            <span class="page-link">{{ page }}</span>
+        </li>
+        {% elif page > page_obj.number|add:"-3" and page < page_obj.number|add:"3" %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+            {% if page_obj.has_next %}
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Keyingi</a>
+            {% else %}
+            <span class="page-link">Keyingi</span>
+            {% endif %}
+        </li>
+    </ul>
+</nav>
+{% endif %}
+</div>
+
+{% endblock main %}

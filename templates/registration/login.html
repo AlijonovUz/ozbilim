@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}O'zBilim | Kirish{% endblock %}
+
+{% block main %}
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <div class="col-md-6 col-lg-5">
+        <div class="card border-0">
+            <div class="card-body p-4">
+                <h4 class="text-center mb-4 text-primary">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Tizimga kirish
+                </h4>
+
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary w-100">Kirish</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <span class="text-muted">Hisobingiz yo‘qmi?</span>
+                    <a href="{% url 'register' %}">Ro‘yxatdan o‘ting</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

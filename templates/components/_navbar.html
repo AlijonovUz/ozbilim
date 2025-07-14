@@ -1,0 +1,116 @@
+{% load static %}
+
+<!-- NAVBAR with TOGGLER -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{% url 'home' %}">
+            <i class="bi bi-book-half fs-4 text-primary"></i> <span class="fs-5">O‘zBilim</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Bosh sahifa</a>
+                </li>
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create-article' %}">Maqola qo'shish</a>
+                </li>
+                {% endif %}
+            </ul>
+
+            {% if request.user.is_authenticated %}
+            <div class="dropdown me-3">
+                <a class="nav-link p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                   style="position: relative; display: inline-block;">
+
+                    <!-- Qo'ng'iroqcha ikonkasi -->
+                    <i class="bi bi-bell fs-5 text-secondary"></i>
+
+                    <!-- Badge – icon ustiga chiqadi -->
+                    {% if unread_notifications %}
+                    <span class="position-absolute bg-danger text-white rounded-pill px-1 small"
+                          style="top: -6px; right: -8px; font-size: 0.65rem; min-width: 18px; text-align: center;">
+                        {{ unread_notifications|length }}
+                    </span>
+                    {% endif %}
+                </a>
+
+                <!-- Dropdown menyu -->
+                <ul class="dropdown-menu dropdown-menu-end shadow-lg p-0 border-0"
+                    style="min-width: 360px; max-height: 500px; overflow-y: auto;">
+                    <li class="border-bottom px-3 py-2 bg-light">
+                        <strong class="text-dark small">Bildirishnomalar</strong>
+                    </li>
+
+                    {% if unread_notifications %}
+                    {% for notification in unread_notifications %}
+                    <li>
+                        <a class="dropdown-item d-flex align-items-start gap-2 py-3"
+                           href="{% url 'read-notification' notification.pk %}">
+                            <i class="bi bi-bell text-primary fs-5 mt-1"></i>
+                            <div>
+                                <div class="fw-semibold">{{ notification.title }}</div>
+                                <div class="small text-muted text-wrap text-break">
+                                    {{ notification.message }}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    {% else %}
+                    <li class="px-3 py-2 text-muted small">
+                        <i class="bi bi-bell-slash me-1"></i> Bildirishnomalar topilmadi.
+                    </li>
+                    {% endif %}
+
+                    <li>
+                        <hr class="my-1">
+                    </li>
+
+                    <li class="text-center px-3 py-2">
+                        <a href="{% url 'read-all-notifications' %}" class="btn btn-outline-primary w-100 px-4 py-2">
+                            <i class="bi bi-check2-circle me-1"></i> Barcha bildirishnomalarni o'qish
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-decoration-none dropdown-toggle no-caret" href="#"
+                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                    <img src="{% if request.user.avatar %}{{ request.user.avatar.url }}{% else %}{% static 'uploads/image.png' %}{% endif %}"
+                         class="rounded-circle shadow-sm me-2" width="35" height="35"
+                         alt="avatar">
+                    <span>{% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    {% if request.user.is_staff %}
+                    <li><a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Admin panel</a>
+                    </li>
+                    {% endif %}
+                    <li><a class="dropdown-item" href="{% url 'profile' request.user.username %}">Mening profilim</a>
+                    </li>
+                    <li><a class="dropdown-item" href="{% url 'settings' %}">Sozlamalar</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Chiqish</a></li>
+                </ul>
+            </div>
+            {% else %}
+            <div class="d-flex gap-2">
+                <a href="{% url 'login' %}" class="btn btn-outline-primary">Kirish</a>
+                <a href="{% url 'register' %}" class="btn btn-primary">Ro‘yxatdan o‘tish</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
