@@ -17,6 +17,14 @@ class ArticleAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     ordering = ['-created_at']
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'author':
+            if MyUser.objects.all().exists():
+                kwargs['empty_label'] = "Tanlang"
+            else:
+                kwargs['empty_label'] = "Mavjud emas"
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 @admin.register(MyUser)
 class MyUserAdmin(admin.ModelAdmin):
@@ -43,6 +51,21 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = ('created_at', 'user')
     search_fields = ('content', 'user__username', 'article__title')
     ordering = ['-created_at']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'user':
+            if MyUser.objects.exists():
+                kwargs['empty_label'] = "Tanlang"
+            else:
+                kwargs['empty_label'] = "Mavjud emas"
+
+        elif db_field.name == 'article':
+            if Article.objects.exists():
+                kwargs['empty_label'] = "Tanlang"
+            else:
+                kwargs['empty_label'] = "Mavjud emas"
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 @admin.register(Notification)

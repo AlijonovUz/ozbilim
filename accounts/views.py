@@ -3,14 +3,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import DetailView, CreateView
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.utils import timezone
 from django.views import View
 
 from manager.mixins import LoginNoRequiredMixin
 from manager.models import *
+
+from .utils import logout_other_devices
 from .forms import *
 
 
@@ -45,7 +46,17 @@ class LoginPageView(LoginView):
     redirect_authenticated_user = True
 
     def form_valid(self, form):
+        user = form.get_user()
         messages.success(self.request, "Siz muvaffaqiyatli tizimga kirdingiz!")
+
+        logout_other_devices(user)
+
+        Notification.objects.create(
+            user=user,
+            title="Xush kelibsiz!",
+            message="O‘zBilim saytiga xush kelibsiz. Sizni ko‘rib turganimizdan xursandmiz!",
+        )
+
         return super().form_valid(form)
 
     def get_success_url(self):

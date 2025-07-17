@@ -66,4 +66,6 @@ class Notification(models.Model):
         return f"{self.user} uchun {self.message}"
 
     class Meta:
+        verbose_name = "Bildirishnoma "
+        verbose_name_plural = "Bildirishnomalar"
         ordering = ['-created_at']

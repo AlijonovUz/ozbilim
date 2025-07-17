@@ -74,7 +74,7 @@ class ArticleImageForm(forms.Form):
             'class': 'form-control',
             'accept': 'image/*',
         }),
-        label="1200x675 - o'lchamli rasmlar (ixtiyoriy)"
+        label="Rasmlar (ixtiyoriy)"
     )
     delete_images = forms.MultipleChoiceField(
         required=False,

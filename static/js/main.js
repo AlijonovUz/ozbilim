@@ -6,13 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const input = document.getElementById("searchInput");
 
     if (form && input) {
-            form.addEventListener("submit", function (e) {
-                if (input.value.trim() === "") {
-                    e.preventDefault();
-                    input.classList.add("is-invalid");
-                } else {
-                    input.classList.remove("is-invalid");
-                }
+        form.addEventListener("submit", function (e) {
+            if (input.value.trim() === "") {
+                e.preventDefault();
+                input.classList.add("is-invalid");
+            } else {
+                input.classList.remove("is-invalid");
+            }
         });
     }
 
@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-
     const toastElList = [].slice.call(document.querySelectorAll('.toast'));
     if (toastElList.length) {
         toastElList.forEach(function (toastEl) {
@@ -38,4 +37,3 @@ document.addEventListener("DOMContentLoaded", function () {
             toast.show();
         });
     }
-});
