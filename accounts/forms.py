@@ -4,54 +4,6 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, Pass
 from manager.models import MyUser
 
 
-class LoginForm(AuthenticationForm):
-    class Meta:
-        model = MyUser
-        fields = ['username', 'password']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        username = self.fields['username']
-        password = self.fields['password']
-
-        username.label = "Foydalanuvchi nomi"
-        password.label = "Parol"
-
-        username.widget.attrs.update({'class': "form-control"})
-        password.widget.attrs.update({'class': "form-control"})
-
-
-class RegisterForm(UserCreationForm):
-    class Meta:
-        model = MyUser
-        fields = ['username', 'first_name', 'last_name', 'email']
-
-        labels = {
-            'username': "Foydalanuvchi nomi",
-            'first_name': "Ism",
-            'last_name': "Familiya",
-            'email': "Elektron pochta"
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        username = self.fields['username']
-        first_name = self.fields['first_name']
-        last_name = self.fields['last_name']
-        email = self.fields['email']
-        password1 = self.fields['password1']
-        password2 = self.fields['password2']
-
-        username.widget.attrs.update({'class': "form-control"})
-        first_name.widget.attrs.update({'class': "form-control"})
-        last_name.widget.attrs.update({'class': "form-control"})
-        email.widget.attrs.update({'class': "form-control"})
-        password1.widget.attrs.update({'class': "form-control"})
-        password2.widget.attrs.update({'class': "form-control"})
-
-
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = MyUser

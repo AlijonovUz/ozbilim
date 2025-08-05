@@ -1,17 +1,18 @@
-from django.contrib.auth import logout, update_session_auth_hash
+import requests
+
+from django.contrib.auth import logout, update_session_auth_hash, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView, CreateView
-from django.urls import reverse_lazy
+from django.views.generic import DetailView
 from django.contrib import messages
 from django.views import View
 
+from bot.models import LoginCode
 from manager.mixins import LoginNoRequiredMixin
 from manager.models import *
 
-from .utils import logout_other_devices
+from .utils import *
 from .forms import *
 
 
@@ -41,44 +42,76 @@ class ProfileView(DetailView):
         return context
 
 
-class LoginPageView(LoginView):
-    form_class = LoginForm
-    redirect_authenticated_user = True
-
-    def form_valid(self, form):
-        user = form.get_user()
-        messages.success(self.request, "Siz muvaffaqiyatli tizimga kirdingiz!")
-
-        logout_other_devices(user)
-
-        Notification.objects.create(
-            user=user,
-            title="Xush kelibsiz!",
-            message="O‘zBilim saytiga xush kelibsiz. Sizni ko‘rib turganimizdan xursandmiz!",
-        )
-
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('home')
-
-
-class RegisterView(LoginNoRequiredMixin, CreateView):
-    model = MyUser
-    form_class = RegisterForm
-    success_url = reverse_lazy('login')
+class LoginPageView(LoginNoRequiredMixin, View):
     template_name = 'registration/register.html'
 
-    def form_valid(self, form):
-        messages.success(self.request, "Siz muvaffaqiyatli ro'yxatdan o'tdingiz!")
-        return super().form_valid(form)
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        code = request.POST.get('code')
+
+        if not code.isdigit() or len(code) != 6:
+            return redirect('login')
+
+        try:
+            login_code = LoginCode.objects.get(code=code)
+        except LoginCode.DoesNotExist:
+            messages.error(request, "Kod noto'g'ri yoki eskirgan!")
+            return redirect('login')
+
+        if login_code.is_expired():
+            messages.error(request, "Kirish kodining muddati tugagan!")
+            return redirect('login')
+
+        try:
+            user = MyUser.objects.get(telegram_id=login_code.chat_id)
+            logout_other_devices(user)
+            login(request, user)
+            login_code.delete()
+
+            messages.success(request, "Siz tizimga muvaffaqiyatli kirdingiz!")
+            return redirect('home')
+
+        except MyUser.DoesNotExist:
+            response = getChat(login_code.chat_id)['result']
+
+            username = response.get('username', f"user_{login_code.chat_id}")
+            first_name = response.get('first_name', '')
+            last_name = response.get('last_name', '')
+            about = response.get('bio', '')
+
+            if response is None:
+                messages.error(request, "Telegram bilan aloqa o'rnatilmadi.")
+                return redirect('login')
+
+            user = MyUser.objects.create(
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+                about=about[:70],
+                telegram_id=login_code.chat_id
+            )
+            user.set_unusable_password()
+
+            if 'photo' in response:
+                file_id = response['photo']['big_file_id']
+                image = download_telegram_profile_photo(file_id,f"{response['username']}_avatar.jpg")
+                user.avatar.save(image.name, image)
+
+            user.save()
+
+            login_code.delete()
+            login(request, user)
+            messages.success(request, "Siz ro'yxatdan o'tdingiz va tizimga kirdingiz.")
+            return redirect('home')
 
 
 class LogoutView(LoginRequiredMixin, View):
 
     def get(self, request):
         logout(request)
-        messages.success(self.request, "Siz muvaffaqiyatli tizimdan chiqdingiz!")
+        messages.success(self.request, "Siz tizimdan muvaffaqiyatli chiqdingiz!")
         return redirect('login')
 
 

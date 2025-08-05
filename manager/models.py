@@ -3,6 +3,7 @@ from django.db import models
 
 
 class MyUser(AbstractUser):
+    telegram_id = models.BigIntegerField(null=True, blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     about = models.TextField(max_length=70, null=True, blank=True)
     is_verified = models.BooleanField(default=False)

@@ -34,7 +34,7 @@ class MyUserAdmin(admin.ModelAdmin):
     readonly_fields = ('last_login', 'date_joined')
     fieldsets = (
         ('Foydalanuvchi maʼlumotlari', {
-            'fields': ('first_name', 'last_name', 'username', 'email', 'avatar', 'is_verified')
+            'fields': ('first_name', 'last_name', 'username', 'email', 'password', 'telegram_id', 'avatar', 'is_verified')
         }),
         ('Ruxsatlar', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')

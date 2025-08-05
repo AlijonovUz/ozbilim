@@ -1,61 +1,141 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}O'zBilim | Ro‘yxatdan o‘tish{% endblock %}
+{% block title %}O'zBilim | Kirish kodi{% endblock %}
 
 {% block main %}
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-4">
-                    <h4 class="text-center mb-4 text-primary"><i class="bi bi-person-plus me-2"></i> Ro‘yxatdan o‘tish
-                    </h4>
-
-                    <form method="post" enctype="multipart/form-data" action="{% url 'register' %}">
-                        {% csrf_token %}
-
-                        {# first_name va last_name yonma-yon bo'ladi #}
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">{{ form.first_name.label }}</label>
-                                {{ form.first_name }}
-                                {% if form.first_name.errors %}
-                                <div class="text-danger small">{{ form.first_name.errors.0 }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">{{ form.last_name.label }}</label>
-                                {{ form.last_name }}
-                                {% if form.last_name.errors %}
-                                <div class="text-danger small">{{ form.last_name.errors.0 }}</div>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        {# qolgan fieldlar #}
-                        {% for field in form %}
-                        {% if field.name != "first_name" and field.name != "last_name" %}
-                        <div class="mb-3">
-                            <label class="form-label">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                            <div class="text-danger small">{{ field.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-
-                        <button type="submit" class="btn btn-primary w-100">Ro‘yxatdan o‘tish</button>
-                    </form>
-
-
-                    <div class="text-center mt-3">
-                        <span class="text-muted">Hisobingiz mavjudmi?</span> <a href="{% url 'login' %}">Kirish</a>
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 85vh;">
+    <div class="col-md-6 col-lg-4">
+        <div class="card border-0 shadow-lg rounded-4">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle shadow-sm bg-light" style="width: 60px; height: 60px;">
+                        <i class="bi bi-shield-lock-fill fs-3 text-primary"></i>
                     </div>
+                    <h4 class="mt-3 fw-bold text-dark">Tasdiqlash kodi</h4>
+                    <p class="text-muted small mb-0">
+                        <a href="tg://resolve?domain=BildirishnomalarBot">@BildirishnomalarBot</a> botiga kiring va 1 daqiqalik kodingizni oling.
+                    </p>
                 </div>
+
+                <form method="post" novalidate autocomplete="off">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-center gap-2 mb-3">
+                        {% for i in "123456" %}
+                            <input type="text" name="code{{ forloop.counter }}" maxlength="1"
+                                   pattern="\d*" inputmode="numeric" required
+                                   class="form-control text-center code-box shadow-sm fw-bold"
+                                   {% if not forloop.first %}disabled{% endif %}>
+                        {% endfor %}
+                    </div>
+
+                    <input type="hidden" name="code" id="full_code">
+
+                    <button type="submit" class="btn btn-primary w-100 fw-semibold shadow">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Kirish
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .code-box {
+        width: 2.6rem;
+        height: 2.8rem;
+        font-size: 1.25rem;
+        border-radius: 0.5rem;
+        border: 1px solid #ced4da;
+        background-color: #f8f9fa;
+        transition: all 0.25s ease-in-out;
+    }
+
+    .code-box:focus {
+        border-color: #0d6efd;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.2);
+        outline: none;
+    }
+
+    @media (max-width: 480px) {
+        .code-box {
+            width: 2.3rem;
+            height: 2.6rem;
+            font-size: 1.1rem;
+        }
+    }
+</style>
+
+<script>
+    const inputs = document.querySelectorAll('.code-box');
+    const fullCodeInput = document.getElementById('full_code');
+
+    function updateHiddenInput() {
+        let fullCode = '';
+        inputs.forEach(i => fullCode += i.value);
+        fullCodeInput.value = fullCode;
+    }
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            const value = input.value.replace(/\D/g, '');
+
+            if (value.length > 1) {
+                const digits = value.split('').slice(0, inputs.length);
+                digits.forEach((digit, idx) => {
+                    inputs[idx].value = digit;
+                    inputs[idx].disabled = false;
+                });
+
+                const nextIdx = digits.length < inputs.length ? digits.length : inputs.length - 1;
+                inputs[nextIdx].focus();
+
+                updateHiddenInput();
+                return;
+            }
+
+            input.value = value;
+
+            if (value && index < inputs.length - 1) {
+                inputs[index + 1].disabled = false;
+                inputs[index + 1].focus();
+            }
+
+            updateHiddenInput();
+        });
+
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Backspace') {
+                input.value = '';
+                if (index > 0) {
+                    inputs[index - 1].focus();
+                }
+
+                for (let i = index + 1; i < inputs.length; i++) {
+                    inputs[i].value = '';
+                    inputs[i].disabled = true;
+                }
+
+                updateHiddenInput();
+            }
+        });
+
+        input.addEventListener('paste', (e) => {
+            const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+            const digits = paste.split('').slice(0, inputs.length);
+            digits.forEach((digit, idx) => {
+                inputs[idx].value = digit;
+                inputs[idx].disabled = false;
+            });
+
+            const nextIdx = digits.length < inputs.length ? digits.length : inputs.length - 1;
+            inputs[nextIdx].focus();
+
+            updateHiddenInput();
+            e.preventDefault();
+        });
+    });
+</script>
+
 {% endblock %}

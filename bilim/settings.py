@@ -27,7 +27,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://966449c99dc6.ngrok-free.app'
+    'https://d44ce5b75f15.ngrok-free.app'
 ]
 
 SESSION_COOKIE_AGE = 3600
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'manager.apps.ManagerConfig',
     'accounts.apps.AccountsConfig',
+    'bot.apps.BotConfig',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +62,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'bilim.urls'
 AUTH_USER_MODEL = 'manager.MyUser'
+BOT_TOKEN = "8157637008:AAFWoKGowJWramxV4FKrS4VGpHtrHXPzwGg"
 
 TEMPLATES = [
     {
