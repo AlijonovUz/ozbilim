@@ -1,5 +1,4 @@
 from django.contrib import admin
-from modeltranslation.admin import TranslationAdmin
 from django.utils.translation import gettext_lazy as _
 from .models import MyUser, Article, ArticleImage, Comment, Notification
 
@@ -10,7 +9,7 @@ class ArticleImageInline(admin.TabularInline):
 
 
 @admin.register(Article)
-class ArticleAdmin(TranslationAdmin):
+class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'created_at', 'views')
     list_filter = ('created_at', 'author')
     readonly_fields = ('views',)
@@ -18,25 +17,6 @@ class ArticleAdmin(TranslationAdmin):
     inlines = [ArticleImageInline]
     date_hierarchy = 'created_at'
     ordering = ['-created_at']
-
-    fieldsets = (
-        (_('O\'zbekcha ma’lumotlar'), {
-            'fields': ('title_uz', 'content_uz'),
-            'classes': ('collapse',),
-        }),
-        (_('Ruscha ma’lumotlar'), {
-            'fields': ('title_ru', 'content_ru'),
-            'classes': ('collapse',),
-        }),
-        (_('Inglizcha ma’lumotlar'), {
-            'fields': ('title_en', 'content_en'),
-            'classes': ('collapse',),
-        }),
-        (_('Asosiy ma’lumotlar'), {
-            'fields': ('author',),
-            'classes': ('collapse',),
-        }),
-    )
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'author':

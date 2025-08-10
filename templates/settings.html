@@ -3,17 +3,296 @@
 
 {% block title %}O'zBilim | {% trans "Sozlamalar" %}{% endblock %}
 
+{% block extra_css %}
+<style>
+    .verified-banner {
+        background: linear-gradient(135deg, #007bff, #339dff, #66bfff, #007bff);
+        background-size: 300% 300%;
+        animation: blueShift 8s ease infinite, fadeIn 0.8s ease-in-out;
+        border-left: 6px solid #0d6efd;
+        box-shadow: 0 8px 25px rgba(13,110,253,0.35), inset 0 0 35px rgba(255,255,255,0.05);
+        transition: all 0.4s ease;
+        color: white;
+    }
+    .verified-banner:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 12px 35px rgba(13,110,253,0.45), inset 0 0 50px rgba(255,255,255,0.08);
+    }
+
+    /* Official lenta */
+    .official-ribbon {
+        position: absolute;
+        top: 12px; /* pastroqqa tushirdim */
+        right: -50px; /* markazroqqa yaqinlashtirdim */
+        background: linear-gradient(90deg, #004aad, #0d6efd);
+        color: white;
+        padding: 5px 50px; /* kengaytirdim */
+        font-size: 0.75rem;
+        font-weight: 700;
+        transform: rotate(45deg);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        letter-spacing: 1px;
+        z-index: 2;
+        white-space: nowrap; /* so'z kesilmasligi uchun */
+    }
+
+    .verified-badge i {
+        background: linear-gradient(145deg, #ffffff, #e3f2fd, #cce5ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: iconPulse 2.5s infinite;
+    }
+
+    .verified-title {
+        font-size: 1.3rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ffffff, #e3f2fd, #ffffff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .verified-subtitle {
+        color: rgba(255,255,255,0.9);
+        font-size: 0.95rem;
+    }
+
+    /* Shine */
+    .shine {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+        transform: skewX(-20deg);
+        animation: shineMove 3s infinite ease-in-out;
+    }
+
+    /* Sparkles */
+    .sparkle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.9;
+        animation: sparkleMove 3s infinite ease-in-out;
+        filter: drop-shadow(0 0 6px white);
+    }
+    .sparkle-1 { top: 10%; left: 85%; animation-delay: 0.3s; }
+    .sparkle-2 { top: 65%; left: 95%; animation-delay: 1.1s; }
+    .sparkle-3 { top: 40%; left: 75%; animation-delay: 2s; }
+
+    /* Animations */
+    @keyframes shineMove {
+        0% { left: -100%; }
+        60% { left: 130%; }
+        100% { left: 130%; }
+    }
+    @keyframes sparkleMove {
+        0%, 100% { transform: scale(0.8); opacity: 0.8; }
+        50% { transform: scale(1.5); opacity: 1; }
+    }
+    @keyframes iconPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes blueShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    /* ====== VIP CARD ====== */
+    .custom-card {
+        border: none;
+        border-radius: 18px;
+        padding: 2rem;
+        background: linear-gradient(145deg, #ffffff, #f4f8ff);
+        box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .custom-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 40px rgba(0,0,0,0.12);
+    }
+
+    /* ====== Avatar ====== */
+    .avatar-wrapper {
+        width: 150px;
+        height: 150px;
+        position: relative;
+        margin: 0 auto;
+    }
+    .avatar-wrapper img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 5px solid #fff;
+        object-fit: cover;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    /* Overlay for avatar edit */
+    .avatar-overlay {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.45);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        z-index: 3;
+        transition: opacity 0.25s ease;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+    .avatar-wrapper:hover .avatar-overlay {
+        opacity: 1;
+    }
+
+    /* ====== Form VIP style ====== */
+    .form-label {
+        font-weight: 600;
+        color: #334155;
+    }
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #d0d7e2;
+        background-color: #f9fbff;
+        padding: 0.65rem 0.9rem;
+        font-size: 0.95rem;
+        transition: all 0.25s ease;
+    }
+    .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 0.18rem rgba(59, 130, 246, 0.25);
+        background-color: #fff;
+    }
+
+    /* ====== Buttons VIP ====== */
+    .btn {
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 0.55rem 1.1rem;
+        transition: all 0.25s ease;
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        border: none;
+    }
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(37,99,235,0.3);
+    }
+    .btn-danger {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border: none;
+    }
+    .btn-danger:hover {
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220,38,38,0.3);
+    }
+
+    /* ====== Delete account section ====== */
+    .delete-title {
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: #dc2626;
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+    .delete-text {
+        font-size: .95rem;
+        color: #6b7280;
+    }
+</style>
+{% endblock extra_css %}
+
 {% block main %}
 <div class="container my-5">
-    <h3 class="text-center mb-4 text-primary">{% trans "Profil sozlamalari" %}</h3>
+
+    {% if request.user.is_verified %}
+    <div class="verified-banner p-3 mb-4 d-flex align-items-center rounded-4 shadow-lg position-relative overflow-hidden">
+        <div class="official-ribbon">Official</div>
+        <span class="verified-badge me-3 flex-shrink-0">
+        <i class="bi bi-patch-check-fill fs-3"></i>
+    </span>
+        <div>
+            <strong class="verified-title">{% trans "Tasdiqlangan hisob" %}</strong>
+            <div class="small verified-subtitle">{% trans "Sizning profilingiz rasmiy tarzda tasdiqlangan." %}</div>
+        </div>
+        <span class="shine"></span>
+        <span class="sparkle sparkle-1"></span>
+        <span class="sparkle sparkle-2"></span>
+        <span class="sparkle sparkle-3"></span>
+    </div>
+    {% endif %}
+
 
     <div class="row g-4">
 
-        <!-- 1. Foydalanuvchi ma'lumotlarini tahrirlash -->
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title mb-3 text-primary">{% trans "Shaxsiy ma'lumotlar" %}</h5>
+
+        <!-- Avatar va Shaxsiy ma'lumotlar -->
+        <div class="custom-card">
+            <div class="row g-4">
+
+                <!-- Avatar qismi -->
+                <div class="col-md-4 text-center">
+                    <form method="post" enctype="multipart/form-data" action="{% url 'settings' %}">
+                        {% csrf_token %}
+                        {{ avatar_form.non_field_errors }}
+                        {% for field in avatar_form %}
+                        <div class="avatar-wrapper mx-auto mb-3">
+                            <img id="avatar-preview"
+                                 src="{% if request.user.avatar %}{{ request.user.avatar.url }}{% else %}{% static 'uploads/image.png' %}{% endif %}"
+                                 alt="Avatar">
+                            <label for="file-upload" class="avatar-overlay">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                     fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                                    <path d="M4.5 3a.5.5 0 0 0-.5.5V4h-1A1.5 1.5
+                               0 0 0 1.5 5.5v6A1.5 1.5
+                               0 0 0 3 13h10a1.5 1.5
+                               0 0 0 1.5-1.5v-6A1.5
+                               1.5 0 0 0 13 4h-1v-.5a.5.5
+                               0 0 0-.5-.5h-7zM8 5.5a3 3
+                               0 1 1 0 6 3 3 0 0 1 0-6z"/>
+                                </svg>
+                                <span>{% trans "O'zgartirish" %}</span>
+                            </label>
+                        </div>
+
+                        <input type="file" name="{{ field.name }}" id="file-upload" class="d-none" accept="image/*">
+                        <div class="file-meta small text-muted" id="file-name">
+                            {% trans "Fayl tanlanmagan" %}
+                        </div>
+
+                        {% if field.errors %}
+                        <div class="text-danger small mb-2">{{ field.errors.0 }}</div>
+                        {% endif %}
+
+                        <div class="d-grid gap-2 mt-3">
+                            <button type="submit" name="submit_avatar" class="btn btn-primary btn-sm">
+                                {% trans "Rasmni yangilash" %}
+                            </button>
+                            <button type="submit" name="remove_avatar" class="btn btn-outline-danger btn-sm">
+                                {% trans "Rasmni o‘chirish" %}
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </form>
+                </div>
+
+                <!-- Shaxsiy ma'lumotlar -->
+                <div class="col-md-8">
                     <form method="post" action="{% url 'settings' %}">
                         {% csrf_token %}
                         {{ profile_form.non_field_errors }}
@@ -26,88 +305,50 @@
                             {% endif %}
                         </div>
                         {% endfor %}
-                        <button type="submit" name="submit_profile" class="btn btn-primary">{% trans "Saqlash" %}
+                        <button type="submit" name="submit_profile" class="btn btn-primary px-4">
+                            {% trans "Saqlash" %}
                         </button>
                     </form>
                 </div>
+
             </div>
         </div>
 
-        <!-- 2. Profil rasmini yangilash yoki o‘chirish -->
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title mb-3 text-primary">{% trans "Profil rasmi" %}</h5>
-                    <form method="post" enctype="multipart/form-data" action="{% url 'settings' %}">
-                        {% csrf_token %}
-                        {{ avatar_form.non_field_errors }}
-                        <div class="mb-3 text-center">
-                            <img src="{% if request.user.avatar %}{{ request.user.avatar.url }}{% else %}{% static 'uploads/image.png' %}{% endif %}"
-                                 class="rounded-circle shadow-sm" width="100" height="100" alt="Avatar">
-                        </div>
-                        {% for field in avatar_form %}
-                        <div class="mb-3">
-                            <label class="form-label">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                            <div class="text-danger small">{{ field.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                        {% endfor %}
-                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-start">
-                            <button type="submit" name="submit_avatar" class="btn btn-primary w-100 w-sm-auto">{% trans "Rasmni yangilash" %}
-                            </button>
-                            <button type="submit" name="remove_avatar" class="btn btn-outline-danger w-100 w-sm-auto">{% trans "Rasmni o‘chirish" %}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <!-- Hisobni o‘chirish -->
+        <div class="custom-card mt-4">
+            <h5 class="delete-title">
+                <i class="bi bi-exclamation-triangle-fill"></i> {% trans "Hisobni o‘chirish" %}
+            </h5>
+            <p class="delete-text">
+                {% blocktrans %}Agar hisobingiz o‘chirilsa, barcha ma’lumotlaringiz (maqola, izoh, avatar) doimiy tarzda yo‘qoladi. Bu amal ortga qaytarilmaydi!{% endblocktrans %}
+            </p>
+            <form method="post" action="{% url 'settings' %}">
+                {% csrf_token %}
+                <button type="submit" name="submit_delete" class="btn btn-outline-danger w-100">
+                    <i class="bi bi-trash me-1"></i> {% trans "Hisobni o‘chirish" %}
+                </button>
+            </form>
         </div>
-
-        <!-- 3. Parolni o‘zgartirish -->
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title mb-3 text-primary">{% trans "Parolni o‘zgartirish" %}</h5>
-                    <form method="post" action="{% url 'settings' %}">
-                        {% csrf_token %}
-                        {{ password_form.non_field_errors }}
-                        {% for field in password_form %}
-                        <div class="mb-3">
-                            <label class="form-label">{{ field.label }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                            <div class="text-danger small">{{ field.errors.0 }}</div>
-                            {% endif %}
-                        </div>
-                        {% endfor %}
-                        <button type="submit" name="submit_password" class="btn btn-primary">{% trans "Parolni yangilash" %}
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. Hisobni o‘chirish -->
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title mb-3 text-danger">{% trans "Hisobni o‘chirish" %}</h5>
-                    <p class="text-muted">
-                        {% blocktrans %}Agar hisobingiz o‘chirilsa, barcha ma’lumotlaringiz (maqola, izoh, avatar) doimiy tarzda yo‘qoladi. Bu amal ortga qaytarilmaydi!{% endblocktrans %}
-                    </p>
-                    <form method="post" action="{% url 'settings' %}">
-                        {% csrf_token %}
-                        <button type="submit" name="submit_delete" class="btn btn-outline-danger">
-                            <i class="bi bi-trash me-1"></i> {% trans "Hisobni o‘chirish" %}
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
 
     </div>
 </div>
 {% endblock %}
+
+{% block js %}
+<script>
+    document.getElementById('file-upload').addEventListener('change', function() {
+        const file = this.files[0];
+        const fileNameElement = document.getElementById('file-name');
+        const previewElement = document.getElementById('avatar-preview');
+
+        if (file) {
+            fileNameElement.textContent = file.name;
+            const reader = new FileReader();
+            reader.onload = e => previewElement.src = e.target.result;
+            reader.readAsDataURL(file);
+        } else {
+            fileNameElement.textContent = "{% trans 'Fayl tanlanmagan' %}";
+        }
+    });
+</script>
+{% endblock js %}

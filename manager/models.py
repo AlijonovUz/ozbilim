@@ -2,8 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _, get_language
 from django.db import models
 
-from manager.utils import translate_text
-
 
 class MyUser(AbstractUser):
     telegram_id = models.BigIntegerField(null=True, blank=True)
@@ -32,41 +30,6 @@ class Article(models.Model):
     class Meta:
         verbose_name = _("Maqola ")
         verbose_name_plural = _("Maqolalar")
-
-    def save(self, *args, **kwargs):
-        lang = get_language()
-
-        if self.title:
-            if lang == 'uz' and not self.title_uz:
-                self.title_uz = self.title
-            elif lang == 'ru' and not self.title_ru:
-                self.title_ru = self.title
-            elif lang == 'en' and not self.title_en:
-                self.title_en = self.title
-
-            if lang != 'uz' and not self.title_uz:
-                self.title_uz = translate_text(self.title, lang, 'uz')
-            if lang != 'ru' and not self.title_ru:
-                self.title_ru = translate_text(self.title, lang, 'ru')
-            if lang != 'en' and not self.title_en:
-                self.title_en = translate_text(self.title, lang, 'en')
-
-        if self.content:
-            if lang == 'uz' and not self.content_uz:
-                self.content_uz = self.content
-            elif lang == 'ru' and not self.content_ru:
-                self.content_ru = self.content
-            elif lang == 'en' and not self.content_en:
-                self.content_en = self.content
-
-            if lang != 'uz' and not self.content_uz:
-                self.content_uz = translate_text(self.content, lang, 'uz')
-            if lang != 'ru' and not self.content_ru:
-                self.content_ru = translate_text(self.content, lang, 'ru')
-            if lang != 'en' and not self.content_en:
-                self.content_en = translate_text(self.content, lang, 'en')
-
-        super().save(*args, **kwargs)
 
 
 class ArticleImage(models.Model):

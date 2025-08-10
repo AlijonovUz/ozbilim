@@ -24,10 +24,10 @@ from manager.views import Custom404
 
 handler404 = Custom404.as_view()
 
-urlpatterns = [
-    path("change-language/", include("django.conf.urls.i18n"), name='set_language'),
-] + i18n_patterns(
-path('admin-panel/', admin.site.urls),
+urlpatterns = i18n_patterns(
+    path('admin-panel/', admin.site.urls),
+    path("language/", include("django.conf.urls.i18n"), name='set_language'),
+
     path('', include('manager.urls')),
     path('accounts/', include('accounts.urls')),
 )

@@ -85,7 +85,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
             for img in self.request.FILES.getlist('images'):
                 ArticleImage.objects.create(article=self.object, image=img)
 
-        messages.success(self.request, _(f"Maqola muvaffaqiyatli qo'shildi."))
+        messages.success(self.request, _("Maqola muvaffaqiyatli qo'shildi."))
         return response
 
     def get_context_data(self, **kwargs):

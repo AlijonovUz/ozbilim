@@ -1,122 +1,153 @@
 {% load static i18n %}
 
-<nav class="navbar navbar-expand-lg bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{% url 'home' %}">
-            <i class="bi bi-book-half fs-4 text-primary"></i> <span class="fs-5">O‘zBilim</span>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-lg" style="backdrop-filter: saturate(180%) blur(10px);">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary" href="{% url 'home' %}">
+      <i class="bi bi-book-half fs-3"></i>
+      <span class="fs-4" style="letter-spacing: 0.06em;">O‘zBilim</span>
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar content -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold fs-6">
+        <li class="nav-item">
+          <a class="nav-link px-3 py-2 position-relative rounded-pill" href="{% url 'home' %}">{% trans "Bosh sahifa" %}</a>
+        </li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link px-3 py-2 position-relative rounded-pill" href="{% url 'create-article' %}">{% trans "Maqola qo'shish" %}</a>
+        </li>
+        {% endif %}
+      </ul>
+
+      <!-- Language dropdown -->
+      <div class="dropdown me-3">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        <button class="btn btn-outline-primary d-flex align-items-center gap-1 px-3 py-1 rounded-pill shadow-sm fw-semibold"
+          type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 110px;">
+          <i class="bi bi-translate fs-5"></i>
+          <span class="flex-grow-1 text-start small">
+            {% for lang in LANGUAGES %}
+              {% if lang.0 == LANGUAGE_CODE %}
+                {{ lang.1 }}
+              {% endif %}
+            {% endfor %}
+          </span>
+          <i class="bi bi-chevron-down fs-6"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow rounded-4 p-0" aria-labelledby="languageDropdown" style="min-width: 180px;">
+          <form id="language-form" action="{% url 'set_language' %}" method="post" class="m-0 p-0">
+            {% csrf_token %}
+            {% for lang in LANGUAGES %}
+            <li>
+              <button type="submit" name="language" value="{{ lang.0 }}"
+                class="dropdown-item d-flex align-items-center gap-2 px-4 py-2 fw-semibold rounded-0 {% if lang.0 == LANGUAGE_CODE %}active-lang{% endif %}">
+                {{ lang.1 }}
+                {% if lang.0 == LANGUAGE_CODE %}
+                <i class="bi bi-check2 ms-auto text-primary"></i>
+                {% endif %}
+              </button>
+            </li>
+            {% endfor %}
+          </form>
+        </ul>
+      </div>
+
+      {% if request.user.is_authenticated %}
+      <!-- Notification dropdown -->
+      <div class="dropdown me-3 notification-dropdown position-relative">
+        <a href="#" class="nav-link p-0 position-relative" id="notificationToggle" data-bs-toggle="dropdown" aria-expanded="false"
+          role="button" style="display: inline-block;">
+          <i class="bi bi-bell-fill bell-icon"></i>
+          {% if unread_notifications %}
+          <span class="notification-count rounded-circle d-flex align-items-center justify-content-center shadow-sm">
+            {{ unread_notifications|length }}
+          </span>
+          {% endif %}
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4 p-0 notification-menu" aria-labelledby="notificationToggle" tabindex="-1">
+          <li class="notification-header d-flex justify-content-between align-items-center px-4 py-3 border-bottom">
+            <strong class="text-primary fs-6 fw-bold">{% trans "Bildirishnomalar" %}</strong>
+            <a href="{% url 'read-all-notifications' %}" class="text-primary small fw-semibold text-decoration-none hover-underline">
+              {% trans "Barchasini o'qish" %}
+            </a>
+          </li>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">{% trans "Bosh sahifa" %}</a>
-                </li>
-                {% if request.user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'create-article' %}">{% trans "Maqola qo'shish" %}</a>
-                </li>
-                {% endif %}
-            </ul>
+          {% if unread_notifications %}
+          {% for notification in unread_notifications %}
+          <li>
+            <a href="{% url 'read-notification' notification.pk %}" class="dropdown-item notification-item d-flex gap-3 px-4 py-3 align-items-start">
+              <div class="icon-wrapper bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow">
+                <i class="bi bi-bell-fill fs-5"></i>
+              </div>
+              <div class="notification-content flex-grow-1">
+                <div class="fw-semibold text-truncate">{{ notification.title }}</div>
+                <div class="text-muted small text-truncate mt-1">{{ notification.message }}</div>
+                <div class="notification-time fst-italic small text-muted mt-2">
+                  {{ notification.created_at|timesince }} {% trans "oldin" %}
+                </div>
+              </div>
+            </a>
+          </li>
+          {% endfor %}
+          {% else %}
+          <li class="px-4 py-5 text-center text-muted fst-italic">
+            <i class="bi bi-bell-slash fs-3 mb-2"></i>
+            <div>{% trans "Bildirishnomalar mavjud emas." %}</div>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
 
-            <div class="dropdown me-3">
-                {% get_current_language as LANGUAGE_CODE %}
-                {% get_available_languages as LANGUAGES %}
-                <button class="btn btn-outline-secondary d-flex align-items-center gap-2" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 140px;">
-                    <span class="flex-grow-1">
-                        {% for lang in LANGUAGES %}
-                            {% if lang.0 == LANGUAGE_CODE %}
-                                {{ lang.1 }}
-                            {% endif %}
-                        {% endfor %}
-                    </span>
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 p-0" aria-labelledby="languageDropdown" style="min-width: 180px;">
-                    <form id="language-form" action="{% url 'set_language' %}" method="post" class="m-0 p-0">
-                        {% csrf_token %}
-                        <input type="hidden" name="language" id="language-input">
-                        {% for lang in LANGUAGES %}
-                            <li>
-                                <button type="submit" name="language" value="{{ lang.0 }}" class="dropdown-item d-flex align-items-center gap-2 px-3 py-2" style="border-radius: 0;">
-                                    {{ lang.1 }}
-                                    {% if lang.0 == LANGUAGE_CODE %}
-                                        <i class="bi bi-check2 ms-auto text-primary"></i>
-                                    {% endif %}
-                                </button>
-                            </li>
-                        {% endfor %}
-                    </form>
-                </ul>
-            </div>
+      <!-- User dropdown -->
+      <div class="dropdown">
+        <a class="d-flex align-items-center text-decoration-none dropdown-toggle no-caret" href="#" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <img src="{% if request.user.avatar %}{{ request.user.avatar.url }}{% else %}{% static 'uploads/image.png' %}{% endif %}"
+            alt="avatar" class="rounded-circle shadow-sm me-2" width="38" height="38">
+          <span class="fw-semibold user-name small">
+            {% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %}
+          </span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow rounded-4 mt-2 py-2" style="min-width: 210px;">
+          {% if request.user.is_staff %}
+          <li><a class="dropdown-item fw-semibold" href="{% url 'admin:index' %}" target="_blank">{% trans "Boshqaruv paneli" %}</a></li>
+          {% endif %}
+          <li><a class="dropdown-item fw-semibold" href="{% url 'profile' request.user.username %}">{% trans "Mening profilim" %}</a></li>
+          <li><a class="dropdown-item fw-semibold" href="{% url 'settings' %}">{% trans "Sozlamalar" %}</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item fw-semibold text-danger" href="{% url 'logout' %}">{% trans "Chiqish" %}</a></li>
+        </ul>
+      </div>
 
-            {% if request.user.is_authenticated %}
-            <div class="dropdown me-2">
-                <a class="nav-link p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="position: relative; display: inline-block;">
-                    <i class="bi bi-bell fs-5 text-secondary"></i>
-                    {% if unread_notifications %}
-                    <span class="position-absolute bg-danger text-white rounded-pill px-1 small" style="top: -6px; right: -8px; font-size: 0.65rem; min-width: 18px; text-align: center;">
-                        {{ unread_notifications|length }}
-                    </span>
-                    {% endif %}
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end shadow-lg p-0 border-0" style="min-width: 360px; max-height: 500px; overflow-y: auto;">
-                    <li class="border-bottom px-3 py-2 bg-light">
-                        <strong class="text-dark small">{% trans "Bildirishnomalar" %}</strong>
-                    </li>
-                    {% if unread_notifications %}
-                    {% for notification in unread_notifications %}
-                    <li>
-                        <a class="dropdown-item d-flex align-items-start gap-2 py-3" href="{% url 'read-notification' notification.pk %}">
-                            <i class="bi bi-bell text-primary fs-5 mt-1"></i>
-                            <div>
-                                <div class="fw-semibold">{{ notification.title }}</div>
-                                <div class="small text-muted text-wrap text-break">
-                                    {{ notification.message }}
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    {% endfor %}
-                    {% else %}
-                    <li class="px-3 py-2 text-muted small">
-                        <i class="bi bi-bell-slash me-1"></i> {% trans "Bildirishnomalar topilmadi." %}
-                    </li>
-                    {% endif %}
-                    <li>
-                        <hr class="my-1">
-                    </li>
-                    <li class="text-center px-3 py-2">
-                        <a href="{% url 'read-all-notifications' %}" class="btn btn-outline-primary w-100 px-4 py-2">
-                            <i class="bi bi-check2-circle me-1"></i> {% trans "Barcha bildirishnomalarni o'qish" %}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="dropdown">
-                <a class="d-flex align-items-center text-decoration-none dropdown-toggle no-caret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{% if request.user.avatar %}{{ request.user.avatar.url }}{% else %}{% static 'uploads/image.png' %}{% endif %}" class="rounded-circle shadow-sm me-2" width="35" height="35" alt="avatar">
-                    <span>{% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %}</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    {% if request.user.is_staff %}
-                    <li><a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">{% trans "Admin panel" %}</a></li>
-                    {% endif %}
-                    <li><a class="dropdown-item" href="{% url 'profile' request.user.username %}">{% trans "Mening profilim" %}</a></li>
-                    <li><a class="dropdown-item" href="{% url 'settings' %}">{% trans "Sozlamalar" %}</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">{% trans "Chiqish" %}</a></li>
-                </ul>
-            </div>
-            {% else %}
-            <div class="d-flex gap-2">
-                <a href="{% url 'login' %}" class="btn btn-primary px-5">{% trans "Kirish" %}</a>
-            </div>
-            {% endif %}
-        </div>
+      {% else %}
+      <div class="d-flex gap-2">
+        <a href="{% url 'login' %}" class="btn btn-primary px-4 fw-semibold shadow-sm rounded-pill small">
+          {% trans "Kirish" %}
+        </a>
+      </div>
+      {% endif %}
     </div>
+  </div>
 </nav>
+
+<style>
+
+</style>
+
+<script>
+  // Initialize Bootstrap tooltip
+  document.addEventListener('DOMContentLoaded', () => {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+  });
+</script>
