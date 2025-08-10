@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
+from django.utils.translation import gettext_lazy as _
 
 from manager.models import MyUser
 
@@ -9,11 +10,11 @@ class ProfileUpdateForm(forms.ModelForm):
         model = MyUser
         fields = ['first_name', 'last_name', 'username', 'email', 'about']
         labels = {
-            'first_name': "Ism",
-            'last_name': "Familiya",
-            'username': "Foydalanuvchi nomi",
-            'email': "Elektron pochta",
-            'about': "Tarjimayi hol"
+            'first_name': _("Ism"),
+            'last_name': _("Familiya"),
+            'username': _("Foydalanuvchi nomi"),
+            'email': _("Elektron pochta"),
+            'about': _("Tarjimayi hol")
         }
 
         widgets = {
@@ -62,7 +63,7 @@ class PasswordForm(PasswordChangeForm):
         new_password1 = self.fields['new_password1']
         new_password2 = self.fields['new_password2']
 
-        old_password.label = "Amaldagi parol"
+        old_password.label = _("Amaldagi parol")
         old_password.widget.attrs.update({'class': "form-control"})
         new_password1.widget.attrs.update({'class': "form-control"})
         new_password2.widget.attrs.update({'class': "form-control"})

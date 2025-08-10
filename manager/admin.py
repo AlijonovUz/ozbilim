@@ -1,4 +1,6 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
+from django.utils.translation import gettext_lazy as _
 from .models import MyUser, Article, ArticleImage, Comment, Notification
 
 
@@ -8,7 +10,7 @@ class ArticleImageInline(admin.TabularInline):
 
 
 @admin.register(Article)
-class ArticleAdmin(admin.ModelAdmin):
+class ArticleAdmin(TranslationAdmin):
     list_display = ('title', 'author', 'created_at', 'views')
     list_filter = ('created_at', 'author')
     readonly_fields = ('views',)
@@ -17,12 +19,31 @@ class ArticleAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     ordering = ['-created_at']
 
+    fieldsets = (
+        (_('O\'zbekcha ma’lumotlar'), {
+            'fields': ('title_uz', 'content_uz'),
+            'classes': ('collapse',),
+        }),
+        (_('Ruscha ma’lumotlar'), {
+            'fields': ('title_ru', 'content_ru'),
+            'classes': ('collapse',),
+        }),
+        (_('Inglizcha ma’lumotlar'), {
+            'fields': ('title_en', 'content_en'),
+            'classes': ('collapse',),
+        }),
+        (_('Asosiy ma’lumotlar'), {
+            'fields': ('author',),
+            'classes': ('collapse',),
+        }),
+    )
+
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'author':
             if MyUser.objects.all().exists():
-                kwargs['empty_label'] = "Tanlang"
+                kwargs['empty_label'] = _("Tanlang")
             else:
-                kwargs['empty_label'] = "Mavjud emas"
+                kwargs['empty_label'] = _("Mavjud emas")
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
@@ -33,13 +54,13 @@ class MyUserAdmin(admin.ModelAdmin):
     search_fields = ('username', 'email')
     readonly_fields = ('last_login', 'date_joined')
     fieldsets = (
-        ('Foydalanuvchi maʼlumotlari', {
+        (_('Foydalanuvchi maʼlumotlari'), {
             'fields': ('first_name', 'last_name', 'username', 'email', 'password', 'telegram_id', 'avatar', 'is_verified')
         }),
-        ('Ruxsatlar', {
+        (_('Ruxsatlar'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
         }),
-        ('Tizim maʼlumotlari', {
+        (_('Tizim maʼlumotlari'), {
             'fields': ('last_login', 'date_joined')
         }),
     )
@@ -55,15 +76,15 @@ class CommentAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'user':
             if MyUser.objects.exists():
-                kwargs['empty_label'] = "Tanlang"
+                kwargs['empty_label'] = _("Tanlang")
             else:
-                kwargs['empty_label'] = "Mavjud emas"
+                kwargs['empty_label'] = _("Mavjud emas")
 
         elif db_field.name == 'article':
             if Article.objects.exists():
-                kwargs['empty_label'] = "Tanlang"
+                kwargs['empty_label'] = _("Tanlang")
             else:
-                kwargs['empty_label'] = "Mavjud emas"
+                kwargs['empty_label'] = _("Mavjud emas")
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 

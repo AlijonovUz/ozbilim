@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from .models import Article, Comment
 
@@ -39,12 +40,12 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={
                 'class': "form-control",
-                'placeholder': "Izohingizni yozing...",
+                'placeholder': _("Izohingizni yozing..."),
                 'rows': 3
             })
         }
         labels = {
-            'content': "Izohingiz:"
+            'content': _("Izohingiz:")
         }
 
 
@@ -53,8 +54,8 @@ class ArticleForm(forms.ModelForm):
         model = Article
         fields = ['title', 'content']
         labels = {
-            'title': "Sarlavha",
-            'content': "Maqola matni"
+            'title': _("Sarlavha"),
+            'content': _("Maqola matni")
         }
         widgets = {
             'title': forms.TextInput(attrs={
@@ -74,12 +75,12 @@ class ArticleImageForm(forms.Form):
             'class': 'form-control',
             'accept': 'image/*',
         }),
-        label="Rasmlar (ixtiyoriy)"
+        label=_("Rasmlar (ixtiyoriy)")
     )
     delete_images = forms.MultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple,
-        label="O‘chirish uchun rasmlarni tanlang"
+        label=_("O‘chirish uchun rasmlarni tanlang")
     )
 
     def __init__(self, *args, **kwargs):

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 
 
@@ -15,5 +16,5 @@ class LoginCode(models.Model):
         return f"{self.chat_id} - {self.code}"
 
     class Meta:
-        verbose_name = "Kirish kodi "
-        verbose_name_plural = "Kirish kodlari"
+        verbose_name = _("Kirish kodi ")
+        verbose_name_plural = _("Kirish kodlari")

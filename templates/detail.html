@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}
 O'zBilim | {{ article.title }}
@@ -34,11 +34,11 @@ O'zBilim | {{ article.title }}
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Oldingi</span>
+        <span class="visually-hidden">{% trans "Oldingi" %}</span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Keyingi</span>
+        <span class="visually-hidden">{% trans "Keyingi" %}</span>
     </button>
 </div>
 {% endif %}
@@ -48,16 +48,16 @@ O'zBilim | {{ article.title }}
     <p>{{ article.content|linebreaksbr }}</p>
 
     <div class="d-flex justify-content-between mt-4 pt-2 border-top">
-        <small class="text-muted">Joylangan sana: {{ article.created_at }}</small>
+        <small class="text-muted">{% trans "Joylangan sana:" %} {{ article.created_at }}</small>
         <div class="views-info text-muted">
-            <i class="bi bi-eye me-1 text-primary"></i> {{ article.views }} marta
+            <i class="bi bi-eye me-1 text-primary"></i> {{ article.views }} {% trans "marta" %}
         </div>
     </div>
 </div>
 
 <!-- COMMENT SECTION -->
 <div class="article-text mt-5">
-    <h5 class="mb-4 text-primary">Izohlar</h5>
+    <h5 class="mb-4 text-primary">{% trans "Izohlar" %}</h5>
 
     <!-- Comment Form -->
     {% if request.user.is_authenticated %}
@@ -69,7 +69,7 @@ O'zBilim | {{ article.title }}
             {{ field }}
             {% endfor %}
         </div>
-        <button type="submit" class="btn btn-primary">Yuborish</button>
+        <button type="submit" class="btn btn-primary">{% trans "Yuborish" %}</button>
     </form>
     {% endif %}
 
@@ -92,7 +92,7 @@ O'zBilim | {{ article.title }}
 
                     {% if request.user == comment.user or article.author == request.user or request.user.is_superuser %}
                     <a href="{% url 'delete-comment' article.pk comment.pk %}" class="btn btn-sm btn-outline-danger">
-                        <i class="bi bi-trash"></i> O‘chirish
+                        <i class="bi bi-trash"></i> {% trans "O‘chirish" %}
                     </a>
                     {% endif %}
                 </div>
@@ -105,7 +105,7 @@ O'zBilim | {{ article.title }}
 
         {% endfor %}
         {% else %}
-        <div class="text-muted fst-italic">Hozircha hech qanday izoh yozilmagan.</div>
+        <div class="text-muted fst-italic">{% trans "Hozircha hech qanday izoh yozilmagan." %}</div>
         {% endif %}
     </div>
 </div>

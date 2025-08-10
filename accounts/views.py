@@ -4,6 +4,7 @@ from django.contrib.auth import logout, update_session_auth_hash, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.translation import gettext as _
 from django.views.generic import DetailView
 from django.contrib import messages
 from django.views import View
@@ -57,11 +58,11 @@ class LoginPageView(LoginNoRequiredMixin, View):
         try:
             login_code = LoginCode.objects.get(code=code)
         except LoginCode.DoesNotExist:
-            messages.error(request, "Kod noto'g'ri yoki eskirgan!")
+            messages.error(request, _("Kod noto'g'ri yoki eskirgan!"))
             return redirect('login')
 
         if login_code.is_expired():
-            messages.error(request, "Kirish kodining muddati tugagan!")
+            messages.error(request, _("Kirish kodining muddati tugagan!"))
             return redirect('login')
 
         try:
@@ -70,7 +71,7 @@ class LoginPageView(LoginNoRequiredMixin, View):
             login(request, user)
             login_code.delete()
 
-            messages.success(request, "Siz tizimga muvaffaqiyatli kirdingiz!")
+            messages.success(request, _("Siz tizimga muvaffaqiyatli kirdingiz!"))
             return redirect('home')
 
         except MyUser.DoesNotExist:
@@ -82,7 +83,7 @@ class LoginPageView(LoginNoRequiredMixin, View):
             about = response.get('bio', '')
 
             if response is None:
-                messages.error(request, "Telegram bilan aloqa o'rnatilmadi.")
+                messages.error(request, _("Telegram bilan aloqa o'rnatilmadi."))
                 return redirect('login')
 
             user = MyUser.objects.create(
@@ -103,7 +104,7 @@ class LoginPageView(LoginNoRequiredMixin, View):
 
             login_code.delete()
             login(request, user)
-            messages.success(request, "Siz ro'yxatdan o'tdingiz va tizimga kirdingiz.")
+            messages.success(request, _("Siz ro'yxatdan o'tdingiz va tizimga kirdingiz."))
             return redirect('home')
 
 
@@ -111,7 +112,7 @@ class LogoutView(LoginRequiredMixin, View):
 
     def get(self, request):
         logout(request)
-        messages.success(self.request, "Siz tizimdan muvaffaqiyatli chiqdingiz!")
+        messages.success(self.request, _("Siz tizimdan muvaffaqiyatli chiqdingiz!"))
         return redirect('login')
 
 
@@ -140,7 +141,7 @@ class UserSettingsView(LoginRequiredMixin, View):
 
             if profile_form.is_valid():
                 profile_form.save()
-                messages.success(request, "Ma'lumotlar muvaffaqiyatli saqlandi.")
+                messages.success(request, _("Ma'lumotlar muvaffaqiyatli saqlandi."))
                 return redirect('settings')
 
         elif 'submit_avatar' in post:
@@ -150,13 +151,13 @@ class UserSettingsView(LoginRequiredMixin, View):
 
             if avatar_form.is_valid():
                 avatar_form.save()
-                messages.success(request, "Profil rasmi yangilandi.")
+                messages.success(request, _("Profil rasmi yangilandi."))
                 return redirect('settings')
 
         elif 'remove_avatar' in post:
             if user.avatar:
                 user.avatar.delete(save=True)
-                messages.success(request, "Profil rasmi o'chirildi.")
+                messages.success(request, _("Profil rasmi o'chirildi."))
             return redirect('settings')
 
         elif 'submit_password' in post:
@@ -167,12 +168,12 @@ class UserSettingsView(LoginRequiredMixin, View):
             if password_form.is_valid():
                 user = password_form.save()
                 update_session_auth_hash(request, user)
-                messages.success(request, "Parolingiz muvaffaqiyatli yangilandi.")
+                messages.success(request, _("Parolingiz muvaffaqiyatli yangilandi."))
                 return redirect('settings')
 
         elif 'submit_delete' in post:
             user.delete()
-            messages.success(request, "Hisobingiz muvaffaqiyatli o'chirildi.")
+            messages.success(request, _("Hisobingiz muvaffaqiyatli o'chirildi."))
             return redirect('home')
 
         else:

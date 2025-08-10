@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, RedirectView, TemplateView
+from django.utils.translation import gettext as _
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.utils import timezone
@@ -84,7 +85,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
             for img in self.request.FILES.getlist('images'):
                 ArticleImage.objects.create(article=self.object, image=img)
 
-        messages.success(self.request, f"Maqola muvaffaqiyatli qo'shildi.")
+        messages.success(self.request, _(f"Maqola muvaffaqiyatli qo'shildi."))
         return response
 
     def get_context_data(self, **kwargs):
@@ -129,7 +130,7 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
             if image_ids_to_delete:
                 ArticleImage.objects.filter(id__in=image_ids_to_delete, article=self.object).delete()
 
-        messages.success(self.request, "Maqola yangilandi.")
+        messages.success(self.request, _("Maqola yangilandi."))
         return response
 
 
@@ -141,13 +142,13 @@ class ArticleDeleteView(View):
 
         if article.author == user or user.is_superuser:
             article.delete()
-            messages.success(request, "Maqola muvaffaqiyatli o'chirildi.")
+            messages.success(request, _("Maqola muvaffaqiyatli o'chirildi."))
 
             if article.author != user:
                 Notification.objects.create(
                     user=article.author,
-                    title="Maqola o'chirildi.",
-                    message="Siz yozgan maqola administrator tomonidan o‘chirildi.",
+                    title=_("Maqola o'chirildi."),
+                    message=_("Siz yozgan maqola administrator tomonidan o‘chirildi."),
                     link=reverse('profile', args=[user.username])
                 )
 
@@ -173,16 +174,16 @@ class CommentView(LoginRequiredMixin, ThrottlingMixin, CreateView):
         if self.article.author != self.request.user:
             Notification.objects.create(
                 user=self.article.author,
-                title="Yangi izoh",
-                message="Sizning maqolangizga izoh yozildi.",
+                title=_("Yangi izoh"),
+                message=_("Sizning maqolangizga izoh yozildi."),
                 link=reverse('detail', args=[self.article.pk])
             )
 
-        messages.success(self.request, "Izohingiz muvaffaqiyatli qo'shildi!")
+        messages.success(self.request, _("Izohingiz muvaffaqiyatli qo'shildi!"))
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "Izoh yuborishda xatolik yuz berdi.")
+        messages.error(self.request, _("Izoh yuborishda xatolik yuz berdi."))
         return redirect('detail', pk=self.article.pk)
 
     def get_success_url(self):
@@ -199,13 +200,13 @@ class CommentDeleteView(LoginRequiredMixin, View):
 
         if user in [recipient, author] or user.is_superuser:
             comment.delete()
-            messages.success(request, "Izoh muvaffaqiyatli o'chirildi.")
+            messages.success(request, _("Izoh muvaffaqiyatli o'chirildi."))
 
             if recipient != user:
                 Notification.objects.create(
                     user=recipient,
-                    title="Izoh o‘chirildi",
-                    message="Siz yozgan izoh muallif tomonidan o‘chirildi.",
+                    title=_("Izoh o‘chirildi"),
+                    message=_("Siz yozgan izoh muallif tomonidan o‘chirildi."),
                     link=reverse('detail', args=[article_pk])
                 )
 

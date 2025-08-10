@@ -1,5 +1,8 @@
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _, get_language
 from django.db import models
+
+from manager.utils import translate_text
 
 
 class MyUser(AbstractUser):
@@ -12,8 +15,8 @@ class MyUser(AbstractUser):
         return self.username
 
     class Meta:
-        verbose_name = "Foydalanuvchi "
-        verbose_name_plural = "Foydalanuvchilar"
+        verbose_name = _("Foydalanuvchi ")
+        verbose_name_plural = _("Foydalanuvchilar")
 
 
 class Article(models.Model):
@@ -27,8 +30,43 @@ class Article(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = "Maqola "
-        verbose_name_plural = "Maqolalar"
+        verbose_name = _("Maqola ")
+        verbose_name_plural = _("Maqolalar")
+
+    def save(self, *args, **kwargs):
+        lang = get_language()
+
+        if self.title:
+            if lang == 'uz' and not self.title_uz:
+                self.title_uz = self.title
+            elif lang == 'ru' and not self.title_ru:
+                self.title_ru = self.title
+            elif lang == 'en' and not self.title_en:
+                self.title_en = self.title
+
+            if lang != 'uz' and not self.title_uz:
+                self.title_uz = translate_text(self.title, lang, 'uz')
+            if lang != 'ru' and not self.title_ru:
+                self.title_ru = translate_text(self.title, lang, 'ru')
+            if lang != 'en' and not self.title_en:
+                self.title_en = translate_text(self.title, lang, 'en')
+
+        if self.content:
+            if lang == 'uz' and not self.content_uz:
+                self.content_uz = self.content
+            elif lang == 'ru' and not self.content_ru:
+                self.content_ru = self.content
+            elif lang == 'en' and not self.content_en:
+                self.content_en = self.content
+
+            if lang != 'uz' and not self.content_uz:
+                self.content_uz = translate_text(self.content, lang, 'uz')
+            if lang != 'ru' and not self.content_ru:
+                self.content_ru = translate_text(self.content, lang, 'ru')
+            if lang != 'en' and not self.content_en:
+                self.content_en = translate_text(self.content, lang, 'en')
+
+        super().save(*args, **kwargs)
 
 
 class ArticleImage(models.Model):
@@ -36,7 +74,7 @@ class ArticleImage(models.Model):
     image = models.ImageField(upload_to='article_images/')
 
     def __str__(self):
-        return f"Rasm: {self.article.title}"
+        return _(f"Rasm: {self.article.title}")
 
 
 class Comment(models.Model):
@@ -46,16 +84,15 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Comment by {self.user.username} on {self.article.title}"
+        return f"{self.user.username} on {self.article.title}"
 
     class Meta:
-        verbose_name = "Izoh "
-        verbose_name_plural = "Izohlar"
+        verbose_name = _("Izoh ")
+        verbose_name_plural = _("Izohlar")
         ordering = ['-created_at']
 
 
 class Notification(models.Model):
-
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='notifications')
     title = models.CharField(max_length=50)
     message = models.CharField(max_length=255)
@@ -67,6 +104,6 @@ class Notification(models.Model):
         return f"{self.user} uchun {self.message}"
 
     class Meta:
-        verbose_name = "Bildirishnoma "
-        verbose_name_plural = "Bildirishnomalar"
+        verbose_name = _("Bildirishnoma ")
+        verbose_name_plural = _("Bildirishnomalar")
         ordering = ['-created_at']

@@ -18,16 +18,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.i18n import i18n_patterns
 
 from manager.views import Custom404
 
 handler404 = Custom404.as_view()
 
 urlpatterns = [
-    path('admin-panel/', admin.site.urls),
+    path("change-language/", include("django.conf.urls.i18n"), name='set_language'),
+] + i18n_patterns(
+path('admin-panel/', admin.site.urls),
     path('', include('manager.urls')),
     path('accounts/', include('accounts.urls')),
-]
+)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

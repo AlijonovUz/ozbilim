@@ -1,0 +1,451 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-10 11:50+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\accounts\apps.py:9
+msgid "Hisoblar"
+msgstr "Accounts"
+
+#: .\accounts\forms.py:13
+msgid "Ism"
+msgstr "First Name"
+
+#: .\accounts\forms.py:14
+msgid "Familiya"
+msgstr "Last Name"
+
+#: .\accounts\forms.py:15
+msgid "Foydalanuvchi nomi"
+msgstr "Username"
+
+#: .\accounts\forms.py:16
+msgid "Elektron pochta"
+msgstr "Email"
+
+#: .\accounts\forms.py:17
+msgid "Tarjimayi hol"
+msgstr "Biography"
+
+#: .\accounts\forms.py:66
+msgid "Amaldagi parol"
+msgstr "Current Password"
+
+#: .\accounts\views.py:61
+msgid "Kod noto'g'ri yoki eskirgan!"
+msgstr "The code is incorrect or expired!"
+
+#: .\accounts\views.py:65
+msgid "Kirish kodining muddati tugagan!"
+msgstr "Login code has expired!"
+
+#: .\accounts\views.py:74
+msgid "Siz tizimga muvaffaqiyatli kirdingiz!"
+msgstr "You have successfully logged in!"
+
+#: .\accounts\views.py:86
+msgid "Telegram bilan aloqa o'rnatilmadi."
+msgstr "Failed to connect with Telegram."
+
+#: .\accounts\views.py:107
+msgid "Siz ro'yxatdan o'tdingiz va tizimga kirdingiz."
+msgstr "You have registered and logged in."
+
+#: .\accounts\views.py:115
+msgid "Siz tizimdan muvaffaqiyatli chiqdingiz!"
+msgstr "You have successfully logged out!"
+
+#: .\accounts\views.py:144
+msgid "Ma'lumotlar muvaffaqiyatli saqlandi."
+msgstr "Data saved successfully."
+
+#: .\accounts\views.py:154
+msgid "Profil rasmi yangilandi."
+msgstr "Profile picture updated."
+
+#: .\accounts\views.py:160
+msgid "Profil rasmi o'chirildi."
+msgstr "Profile picture deleted."
+
+#: .\accounts\views.py:171
+msgid "Parolingiz muvaffaqiyatli yangilandi."
+msgstr "Your password has been updated successfully."
+
+#: .\accounts\views.py:176
+msgid "Hisobingiz muvaffaqiyatli o'chirildi."
+msgstr "Your account has been deleted successfully."
+
+#: .\bilim\settings.py:132
+msgid "O'zbek tili"
+msgstr "Uzbek"
+
+#: .\bilim\settings.py:133
+msgid "Ingliz tili"
+msgstr "English"
+
+#: .\bilim\settings.py:134
+msgid "Rus tili"
+msgstr "Russian"
+
+#: .\bot\apps.py:9
+msgid "Telegram bot"
+msgstr "Telegram Bot"
+
+#: .\bot\bot.py:25
+msgid "Nusxalash"
+msgstr "Copy"
+
+#: .\bot\bot.py:38
+msgid "<b>Kirish kodi:</b>"
+msgstr "Login code"
+
+#: .\bot\bot.py:38
+msgid "<i>Kod faqat 1 daqiqa amal qiladi.</i>"
+msgstr "<i>The code is valid for 1 minute only.</i>"
+
+#: .\bot\models.py:19
+msgid "Kirish kodi "
+msgstr "Login code"
+
+#: .\bot\models.py:20
+msgid "Kirish kodlari"
+msgstr "Login codes"
+
+#: .\manager\admin.py:23
+msgid "O'zbekcha ma’lumotlar"
+msgstr "Uzbek data"
+
+#: .\manager\admin.py:27
+msgid "Ruscha ma’lumotlar"
+msgstr "Russian data"
+
+#: .\manager\admin.py:31
+msgid "Inglizcha ma’lumotlar"
+msgstr "English data"
+
+#: .\manager\admin.py:35
+msgid "Asosiy ma’lumotlar"
+msgstr "Main information"
+
+#: .\manager\admin.py:44 .\manager\admin.py:79 .\manager\admin.py:85
+msgid "Tanlang"
+msgstr "Select"
+
+#: .\manager\admin.py:46 .\manager\admin.py:81 .\manager\admin.py:87
+msgid "Mavjud emas"
+msgstr "Not available"
+
+#: .\manager\admin.py:57
+msgid "Foydalanuvchi maʼlumotlari"
+msgstr "User information"
+
+#: .\manager\admin.py:60
+msgid "Ruxsatlar"
+msgstr "Permissions"
+
+#: .\manager\admin.py:63
+msgid "Tizim maʼlumotlari"
+msgstr "System information"
+
+#: .\manager\apps.py:9 .\templates\components\_navbar.html:110
+#: .\templates\settings.html:4
+msgid "Sozlamalar"
+msgstr "Settings"
+
+#: .\manager\forms.py:43
+msgid "Izohingizni yozing..."
+msgstr "Write your comment..."
+
+#: .\manager\forms.py:48
+msgid "Izohingiz:"
+msgstr "Your comment:"
+
+#: .\manager\forms.py:57
+msgid "Sarlavha"
+msgstr "Title"
+
+#: .\manager\forms.py:58
+msgid "Maqola matni"
+msgstr "Article content"
+
+#: .\manager\forms.py:78
+msgid "Rasmlar (ixtiyoriy)"
+msgstr "Images (optional)"
+
+#: .\manager\forms.py:83
+msgid "O‘chirish uchun rasmlarni tanlang"
+msgstr "Select images to delete"
+
+#: .\manager\mixins.py:32
+msgid "Juda tez-tez izoh yuboryapsiz. Iltimos, biroz kuting."
+msgstr "You are sending comments too frequently. Please wait a moment."
+
+#: .\manager\models.py:18
+msgid "Foydalanuvchi "
+msgstr "User"
+
+#: .\manager\models.py:19
+msgid "Foydalanuvchilar"
+msgstr "Users"
+
+#: .\manager\models.py:33
+msgid "Maqola "
+msgstr "Article"
+
+#: .\manager\models.py:34
+msgid "Maqolalar"
+msgstr "Articles"
+
+#: .\manager\models.py:70
+msgid "Izoh "
+msgstr "Comment"
+
+#: .\manager\models.py:71 .\templates\detail.html:60
+msgid "Izohlar"
+msgstr "Comments"
+
+#: .\manager\models.py:87
+msgid "Bildirishnoma "
+msgstr "Notification"
+
+#: .\manager\models.py:88 .\templates\components\_navbar.html:68
+msgid "Bildirishnomalar"
+msgstr "Notifications"
+
+#: .\manager\templates\manager\article_form.html:4
+#: .\manager\templates\manager\article_form.html:13
+msgid "Yangi maqola qo'shish"
+msgstr "Add new article"
+
+#: .\manager\templates\manager\article_form.html:63
+#: .\templates\settings.html:29
+msgid "Saqlash"
+msgstr "Save"
+
+#: .\manager\views.py:88
+msgid "Maqola muvaffaqiyatli qo'shildi."
+msgstr "Article added successfully."
+
+#: .\manager\views.py:133
+msgid "Maqola yangilandi."
+msgstr "Article updated."
+
+#: .\manager\views.py:145
+msgid "Maqola muvaffaqiyatli o'chirildi."
+msgstr "Article deleted successfully."
+
+#: .\manager\views.py:150
+msgid "Maqola o'chirildi."
+msgstr "Article deleted."
+
+#: .\manager\views.py:151
+msgid "Siz yozgan maqola administrator tomonidan o‘chirildi."
+msgstr "The article you wrote has been deleted by the administrator."
+
+#: .\manager\views.py:177
+msgid "Yangi izoh"
+msgstr "New comment"
+
+#: .\manager\views.py:178
+msgid "Sizning maqolangizga izoh yozildi."
+msgstr "A comment has been added to your article."
+
+#: .\manager\views.py:182
+msgid "Izohingiz muvaffaqiyatli qo'shildi!"
+msgstr "Your comment has been added successfully!"
+
+#: .\manager\views.py:186
+msgid "Izoh yuborishda xatolik yuz berdi."
+msgstr "An error occurred while sending the comment."
+
+#: .\manager\views.py:203
+msgid "Izoh muvaffaqiyatli o'chirildi."
+msgstr "Comment deleted successfully."
+
+#: .\manager\views.py:208
+msgid "Izoh o‘chirildi"
+msgstr "Comment deleted"
+
+#: .\manager\views.py:209
+msgid "Siz yozgan izoh muallif tomonidan o‘chirildi."
+msgstr "The comment you wrote has been deleted by the author."
+
+#: .\templates\404.html:4 .\templates\404.html:13
+msgid "Sahifa topilmadi"
+msgstr "Page not found"
+
+#: .\templates\404.html:14
+msgid ""
+"Kechirasiz, siz izlagan sahifa mavjud emas yoki o‘chirilgan bo‘lishi mumkin."
+msgstr ""
+"Sorry, the page you are looking for does not exist or may have been deleted."
+
+#: .\templates\404.html:16
+msgid "Bosh sahifaga qaytish"
+msgstr "Return to homepage"
+
+#: .\templates\components\_footer.html:4
+msgid "Barcha huquqlar himoyalangan!"
+msgstr "All rights reserved!"
+
+#: .\templates\components\_navbar.html:16 .\templates\index.html:5
+msgid "Bosh sahifa"
+msgstr "Home"
+
+#: .\templates\components\_navbar.html:20
+msgid "Maqola qo'shish"
+msgstr "Add Article"
+
+#: .\templates\components\_navbar.html:86
+msgid "Bildirishnomalar topilmadi."
+msgstr "No notifications found."
+
+#: .\templates\components\_navbar.html:94
+msgid "Barcha bildirishnomalarni o'qish"
+msgstr "Mark all notifications as read"
+
+#: .\templates\components\_navbar.html:107
+msgid "Admin panel"
+msgstr "Admin panel"
+
+#: .\templates\components\_navbar.html:109
+msgid "Mening profilim"
+msgstr "My profile"
+
+#: .\templates\components\_navbar.html:112
+msgid "Chiqish"
+msgstr "Logout"
+
+#: .\templates\components\_navbar.html:117
+#: .\templates\registration\register.html:4
+#: .\templates\registration\register.html:35
+msgid "Kirish"
+msgstr "Login"
+
+#: .\templates\detail.html:37 .\templates\index.html:75
+#: .\templates\index.html:77 .\templates\profile.html:89
+#: .\templates\profile.html:92
+msgid "Oldingi"
+msgstr "Previous"
+
+#: .\templates\detail.html:41 .\templates\index.html:95
+#: .\templates\index.html:97 .\templates\profile.html:107
+#: .\templates\profile.html:110
+msgid "Keyingi"
+msgstr "Next"
+
+#: .\templates\detail.html:51
+msgid "Joylangan sana:"
+msgstr "Posted on:"
+
+#: .\templates\detail.html:53 .\templates\profile.html:52
+msgid "marta"
+msgstr "times"
+
+#: .\templates\detail.html:72
+msgid "Yuborish"
+msgstr "Submit"
+
+#: .\templates\detail.html:95 .\templates\profile.html:67
+msgid "O‘chirish"
+msgstr "Delete"
+
+#: .\templates\detail.html:108
+msgid "Hozircha hech qanday izoh yozilmagan."
+msgstr "No comments yet."
+
+#: .\templates\index.html:11
+msgid "Qidirish..."
+msgstr "Search..."
+
+#: .\templates\index.html:41
+msgid "Maqolani to‘liq o‘qish"
+msgstr "Read full article"
+
+#: .\templates\index.html:64
+msgid "Maqolalar topilmadi."
+msgstr "No articles found."
+
+#: .\templates\profile.html:30
+msgid "Foydalanuvchi haqida ma'lumot mavjud emas."
+msgstr "No user information available."
+
+#: .\templates\profile.html:39
+msgid "Muallif maqolalari"
+msgstr "Author's articles"
+
+#: .\templates\profile.html:58
+msgid "Batafsil"
+msgstr "More details"
+
+#: .\templates\profile.html:64
+msgid "Tahrirlash"
+msgstr "Edit"
+
+#: .\templates\profile.html:78
+msgid "Hozircha hech qanday maqola mavjud emas."
+msgstr "No articles available yet."
+
+#: .\templates\registration\register.html:16
+msgid "Tasdiqlash kodi"
+msgstr "Verification code"
+
+#: .\templates\registration\register.html:17
+#, python-format
+msgid " %(bot_link)s botiga kiring va 1 daqiqalik kodingizni oling."
+msgstr "Join the %(bot_link)s bot and get your 1-minute code."
+
+#: .\templates\settings.html:8
+msgid "Profil sozlamalari"
+msgstr "Profile settings"
+
+#: .\templates\settings.html:16
+msgid "Shaxsiy ma'lumotlar"
+msgstr "Personal information"
+
+#: .\templates\settings.html:40
+msgid "Profil rasmi"
+msgstr "Profile picture"
+
+#: .\templates\settings.html:58
+msgid "Rasmni yangilash"
+msgstr "Profile picture updated."
+
+#: .\templates\settings.html:60
+msgid "Rasmni o‘chirish"
+msgstr "Delete account"
+
+#: .\templates\settings.html:72
+msgid "Parolni o‘zgartirish"
+msgstr "Change password"
+
+#: .\templates\settings.html:85
+msgid "Parolni yangilash"
+msgstr "Password update"
+
+#: .\templates\settings.html:96 .\templates\settings.html:103
+msgid "Hisobni o‘chirish"
+msgstr "Delete account"
+
+#: .\templates\settings.html:98
+msgid ""
+"Agar hisobingiz o‘chirilsa, barcha ma’lumotlaringiz (maqola, izoh, avatar) "
+"doimiy tarzda yo‘qoladi. Bu amal ortga qaytarilmaydi!"
+msgstr ""
+"If your account is deleted, all your data (articles, comments, avatar) will "
+"be permanently lost. This action is irreversible!"

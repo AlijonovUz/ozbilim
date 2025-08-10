@@ -1,5 +1,6 @@
 import time
 
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.mixins import AccessMixin
 from django.core.cache import cache
 from django.contrib import messages
@@ -28,7 +29,7 @@ class ThrottlingMixin:
         return False
 
     def handle_throttling(self, request):
-        messages.warning(request, "Juda tez-tez izoh yuboryapsiz. Iltimos, biroz kuting.")
+        messages.warning(request, _("Juda tez-tez izoh yuboryapsiz. Iltimos, biroz kuting."))
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
 

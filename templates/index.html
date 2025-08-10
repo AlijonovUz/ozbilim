@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}
-O‘zBilim | Bosh sahifa
+O‘zBilim | {% trans "Bosh sahifa" %}
 {% endblock title %}
 
 {% block main %}
 <div class="search-box text-center">
     <form id="searchForm" method="get" action="{% url 'search' %}">
-        <input id="searchInput" name="q" type="text" placeholder="Qidirish..."/>
+        <input id="searchInput" name="q" type="text" placeholder="{% trans 'Qidirish...' %}"/>
         <button type="submit"><i class="bi bi-search"></i></button>
     </form>
 </div>
@@ -38,7 +38,7 @@ O‘zBilim | Bosh sahifa
                     <h5 class="card-title text-primary mt-2">{{ article.title }}</h5>
                     <p class="card-text">{{ article.content|truncatechars:100 }}</p>
                     <a href="{% url 'detail' article.pk %}" class="btn btn-primary mt-2 py-2">
-                        <i class="bi bi-book me-2"></i> Maqolani to‘liq o‘qish
+                        <i class="bi bi-book me-2"></i> {% trans "Maqolani to‘liq o‘qish" %}
                     </a>
 
                     <p class="card-text text-muted small mt-4 d-flex flex-wrap align-items-center">
@@ -49,7 +49,7 @@ O‘zBilim | Bosh sahifa
                         <span class="mx-2">|</span>
                         <span class="d-flex align-items-center">
                             <i class="bi bi-eye me-1"></i>
-                            {{ article.views }} ta
+                            {{ article.views }}
                         </span>
                     </p>
 
@@ -61,7 +61,7 @@ O‘zBilim | Bosh sahifa
     {% else %}
     <div class="text-center text-muted py-5">
         <i class="bi bi-folder-x" style="font-size: 3rem;"></i>
-        <p class="mt-3 fs-5">Maqolalar topilmadi.</p>
+        <p class="mt-3 fs-5">{% trans "Maqolalar topilmadi." %}</p>
     </div>
     {% endif %}
 </div>
@@ -72,9 +72,9 @@ O‘zBilim | Bosh sahifa
 
         <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
             {% if page_obj.has_previous %}
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Oldingi</a>
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans "Oldingi" %}</a>
             {% else %}
-            <span class="page-link">Oldingi</span>
+            <span class="page-link">{% trans "Oldingi" %}</span>
             {% endif %}
         </li>
 
@@ -92,9 +92,9 @@ O‘zBilim | Bosh sahifa
 
         <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
             {% if page_obj.has_next %}
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Keyingi</a>
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Keyingi" %}</a>
             {% else %}
-            <span class="page-link">Keyingi</span>
+            <span class="page-link">{% trans "Keyingi" %}</span>
             {% endif %}
         </li>
     </ul>
