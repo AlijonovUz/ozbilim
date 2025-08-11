@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://d44ce5b75f15.ngrok-free.app'
+    'https://e7dedb0f7933.ngrok-free.app'
 ]
 
 SESSION_COOKIE_AGE = 3600

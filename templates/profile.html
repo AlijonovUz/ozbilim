@@ -15,8 +15,7 @@ O'zBilim | {{ profile_user.get_full_name }}
     <div class="bg-white p-4 rounded shadow-sm">
         <div class="row align-items-center text-center text-md-start">
             <div class="profile-header">
-                <img src="{{ profile_user.avatar.url|default:'static/uploads/image.png' }}" alt="Avatar"
-                     class="avatar"/>
+                <img src="{% if profile_user.avatar %}{{ profile_user.avatar.url }}{% else %}{% static 'uploads/image.png' %}{% endif %}" alt="Avatar" class="avatar" />
                 <div class="info">
                     <div class="fullname">
                         {{ profile_user.get_full_name }}

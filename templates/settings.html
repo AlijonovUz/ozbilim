@@ -271,9 +271,6 @@
                         </div>
 
                         <input type="file" name="{{ field.name }}" id="file-upload" class="d-none" accept="image/*">
-                        <div class="file-meta small text-muted" id="file-name">
-                            {% trans "Fayl tanlanmagan" %}
-                        </div>
 
                         {% if field.errors %}
                         <div class="text-danger small mb-2">{{ field.errors.0 }}</div>
