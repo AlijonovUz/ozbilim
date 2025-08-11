@@ -58,11 +58,7 @@ class ArticleForm(forms.ModelForm):
             'content': _("Maqola matni")
         }
         widgets = {
-            'title': forms.TextInput(attrs={
-                'class': "form-control",
-            }),
             'content': forms.Textarea(attrs={
-                'class': "form-control",
                 'rows': 3
             })
         }
@@ -72,7 +68,6 @@ class ArticleImageForm(forms.Form):
     images = MultipleFileField(
         required=False,
         widget=MultipleFileInput(attrs={
-            'class': 'form-control',
             'accept': 'image/*',
         }),
         label=_("Rasmlar (ixtiyoriy)")

@@ -37,7 +37,7 @@ O‘zBilim | {% trans "Bosh sahifa" %}
                     </div>
                     <h5 class="card-title text-primary mt-2">{{ article.title }}</h5>
                     <p class="card-text">{{ article.content|truncatechars:100 }}</p>
-                    <a href="{% url 'detail' article.pk %}" class="btn btn-primary mt-2 py-2">
+                    <a href="{% url 'detail' article.pk %}" class="btn btn-primary mt-2">
                         <i class="bi bi-book me-2"></i> {% trans "Maqolani to‘liq o‘qish" %}
                     </a>
 
@@ -69,7 +69,6 @@ O‘zBilim | {% trans "Bosh sahifa" %}
 {% if is_paginated %}
 <nav class="mt-4">
     <ul class="pagination">
-
         <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
             {% if page_obj.has_previous %}
             <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans "Oldingi" %}</a>
@@ -100,6 +99,5 @@ O‘zBilim | {% trans "Bosh sahifa" %}
     </ul>
 </nav>
 {% endif %}
-</div>
 
 {% endblock main %}

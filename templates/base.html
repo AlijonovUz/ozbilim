@@ -24,12 +24,14 @@
 {% if messages %}
 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
     {% for message in messages %}
-    <div class="toast align-items-center text-bg-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+    <div class="toast align-items-center text-bg-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} border-0 show"
+         role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
         <div class="d-flex">
             <div class="toast-body">
                 {{ message }}
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Yopish"></button>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Yopish"></button>
         </div>
     </div>
     {% endfor %}
@@ -39,12 +41,14 @@
 {% if form.non_field_errors %}
 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
     {% for error in form.non_field_errors %}
-    <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+    <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive"
+         aria-atomic="true" data-bs-delay="5000">
         <div class="d-flex">
             <div class="toast-body">
                 {{ error }}
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Yopish"></button>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Yopish"></button>
         </div>
     </div>
     {% endfor %}
@@ -54,8 +58,8 @@
 {% include 'components/_navbar.html' %}
 
 <main class="container my-2">
-{% block main %}
-{% endblock main %}
+    {% block main %}
+    {% endblock main %}
 </main>
 
 {% include 'components/_footer.html' %}

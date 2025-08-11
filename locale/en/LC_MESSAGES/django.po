@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-11 00:00+0500\n"
+"POT-Creation-Date: 2025-08-11 11:28+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,15 +90,15 @@ msgstr "Your password has been updated successfully."
 msgid "Hisobingiz muvaffaqiyatli o'chirildi."
 msgstr "Your account has been deleted successfully."
 
-#: .\bilim\settings.py:132
+#: .\bilim\settings.py:133
 msgid "O'zbek tili"
 msgstr "Uzbek"
 
-#: .\bilim\settings.py:133
+#: .\bilim\settings.py:134
 msgid "Ingliz tili"
 msgstr "English"
 
-#: .\bilim\settings.py:134
+#: .\bilim\settings.py:135
 msgid "Rus tili"
 msgstr "Russian"
 
@@ -167,11 +167,11 @@ msgstr "Title"
 msgid "Maqola matni"
 msgstr "Article content"
 
-#: .\manager\forms.py:78
+#: .\manager\forms.py:73
 msgid "Rasmlar (ixtiyoriy)"
 msgstr "Images (optional)"
 
-#: .\manager\forms.py:83
+#: .\manager\forms.py:78
 msgid "O‘chirish uchun rasmlarni tanlang"
 msgstr "Select images to delete"
 
@@ -199,7 +199,7 @@ msgstr "Articles"
 msgid "Izoh "
 msgstr "Comment"
 
-#: .\manager\models.py:54 .\templates\detail.html:60
+#: .\manager\models.py:54 .\templates\detail.html:64
 msgid "Izohlar"
 msgstr "Comments"
 
@@ -212,14 +212,29 @@ msgid "Bildirishnomalar"
 msgstr "Notifications"
 
 #: .\manager\templates\manager\article_form.html:4
-#: .\manager\templates\manager\article_form.html:13
+#: .\manager\templates\manager\article_form.html:175
 msgid "Yangi maqola qo'shish"
 msgstr "Add new article"
 
-#: .\manager\templates\manager\article_form.html:63
+#: .\manager\templates\manager\article_form.html:197
+#: .\manager\templates\manager\article_form.html:239
+#: .\templates\settings.html:275 .\templates\settings.html:350
+msgid "Fayl tanlanmagan"
+msgstr "File not selected"
+
+#: .\manager\templates\manager\article_form.html:198
+msgid "Tanlash"
+msgstr "Select"
+
+#: .\manager\templates\manager\article_form.html:226
 #: .\templates\settings.html:309
 msgid "Saqlash"
 msgstr "Save"
+
+#: .\manager\templates\manager\article_form.html:238
+#, python-format
+msgid "%%(count)d ta fayl tanlandi"
+msgstr "%%(count)d files selected"
 
 #: .\manager\views.py:88
 msgid "Maqola muvaffaqiyatli qo'shildi."
@@ -325,35 +340,35 @@ msgstr "Logout"
 msgid "Kirish"
 msgstr "Login"
 
-#: .\templates\detail.html:37 .\templates\index.html:75
-#: .\templates\index.html:77 .\templates\profile.html:89
-#: .\templates\profile.html:92
+#: .\templates\detail.html:41 .\templates\index.html:74
+#: .\templates\index.html:76 .\templates\profile.html:93
+#: .\templates\profile.html:96
 msgid "Oldingi"
 msgstr "Previous"
 
-#: .\templates\detail.html:41 .\templates\index.html:95
-#: .\templates\index.html:97 .\templates\profile.html:107
-#: .\templates\profile.html:110
+#: .\templates\detail.html:45 .\templates\index.html:94
+#: .\templates\index.html:96 .\templates\profile.html:111
+#: .\templates\profile.html:114
 msgid "Keyingi"
 msgstr "Next"
 
-#: .\templates\detail.html:51
+#: .\templates\detail.html:55
 msgid "Joylangan sana:"
 msgstr "Posted on:"
 
-#: .\templates\detail.html:53 .\templates\profile.html:52
+#: .\templates\detail.html:57 .\templates\profile.html:54
 msgid "marta"
 msgstr "times"
 
-#: .\templates\detail.html:72
+#: .\templates\detail.html:76
 msgid "Yuborish"
 msgstr "Submit"
 
-#: .\templates\detail.html:95 .\templates\profile.html:67
+#: .\templates\detail.html:99 .\templates\profile.html:70
 msgid "O‘chirish"
 msgstr "Delete"
 
-#: .\templates\detail.html:108
+#: .\templates\detail.html:112
 msgid "Hozircha hech qanday izoh yozilmagan."
 msgstr "No comments yet."
 
@@ -369,23 +384,19 @@ msgstr "Read full article"
 msgid "Maqolalar topilmadi."
 msgstr "No articles found."
 
-#: .\templates\profile.html:30
-msgid "Foydalanuvchi haqida ma'lumot mavjud emas."
-msgstr "No user information available."
-
-#: .\templates\profile.html:39
+#: .\templates\profile.html:41
 msgid "Muallif maqolalari"
 msgstr "Author's articles"
 
-#: .\templates\profile.html:58
+#: .\templates\profile.html:60
 msgid "Batafsil"
 msgstr "More details"
 
-#: .\templates\profile.html:64
+#: .\templates\profile.html:67
 msgid "Tahrirlash"
 msgstr "Edit"
 
-#: .\templates\profile.html:78
+#: .\templates\profile.html:82
 msgid "Hozircha hech qanday maqola mavjud emas."
 msgstr "No articles available yet."
 
@@ -410,10 +421,6 @@ msgstr "Your profile has been officially verified."
 msgid "O'zgartirish"
 msgstr "Change"
 
-#: .\templates\settings.html:275 .\templates\settings.html:350
-msgid "Fayl tanlanmagan"
-msgstr "File not selected"
-
 #: .\templates\settings.html:284
 msgid "Rasmni yangilash"
 msgstr "Update image"
@@ -433,3 +440,6 @@ msgid ""
 msgstr ""
 "If your account is deleted, all your data (articles, comments, avatar) will "
 "be permanently lost. This action is irreversible!"
+
+msgid "Foydalanuvchi haqida ma'lumot mavjud emas."
+msgstr "No user information available."

@@ -1,65 +1,228 @@
 {% extends 'base.html' %}
-{% load static i18n %}
+{% load static i18n widget_tweaks %}
 
 {% block title %}O'zBilim | {% trans "Yangi maqola qo'shish" %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        border-radius: 12px;
+        background: #fff;
+        border: 1px solid #dee2e6;
+        box-shadow: 0 6px 15px rgba(13, 110, 253, 0.15);
+    }
+    .form-label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #0d6efd;
+        margin-bottom: 6px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        user-select: none;
+    }
+    .custom-input {
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #212529;
+        background: #fff;
+        border: 1.5px solid #0d6efd;
+        border-radius: 12px;
+        transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        outline: none;
+        box-sizing: border-box;
+    }
+    .custom-input:focus {
+        border-color: #084298;
+        background: #e7f0ff;
+        box-shadow: 0 0 8px rgba(13, 110, 253, 0.4);
+    }
+    .custom-input.error {
+        background: #fff5f5;
+        border-color: #dc3545 !important;
+        color: #a71d2a;
+        font-weight: 600;
+    }
+    .form-check-custom {
+        position: relative;
+        padding-left: 28px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        user-select: none;
+        color: #444;
+        font-weight: 500;
+    }
+    .form-check-custom input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+    .checkmark {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: 18px;
+        width: 18px;
+        background-color: #fff;
+        border-radius: 6px;
+        border: 2px solid #0d6efd;
+        transform: translateY(-50%);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .form-check-custom input:checked ~ .checkmark {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+    .form-check-custom input:checked ~ .checkmark:after {
+        display: block;
+        left: 6px;
+        top: 3px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
+    }
+    input[type="file"] {
+        display: none;
+    }
+    .file-select-wrapper {
+        position: relative;
+        width: 100%;
+        border: 2px solid #0d6efd;
+        border-radius: 12px;
+        background-color: #f8fbff;
+        cursor: text;
+        display: flex;
+        align-items: center;
+        padding: 8px 14px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        user-select: none;
+    }
+    .file-select-wrapper:hover,
+    .file-select-wrapper:focus-within {
+        border-color: #084298;
+        background-color: #e7f0ff;
+    }
+    .file-select-text {
+        flex-grow: 1;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #0d6efd;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        user-select: none;
+    }
+    .file-select-button {
+        background-color: #0d6efd;
+        border: none;
+        color: white;
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 6px 14px;
+        border-radius: 10px;
+        margin-left: 12px;
+        transition: background-color 0.3s ease;
+        user-select: none;
+        cursor: pointer;
+    }
+    .file-select-button:hover,
+    .file-select-button:focus {
+        background-color: #084298;
+        outline: none;
+    }
+    button.btn-primary {
+        font-weight: 700;
+        font-size: 1rem;
+        padding: 8px 0;
+        border-radius: 10px;
+        border: 2px solid #0d6efd;
+        background: #0d6efd;
+        color: #fff;
+        transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 10px rgba(13, 110, 253, 0.25);
+    }
+    button.btn-primary:hover,
+    button.btn-primary:focus {
+        background-color: #084298;
+        border-color: #084298;
+        box-shadow: 0 6px 16px rgba(8, 66, 152, 0.5);
+    }
+    .mb-4 {
+        margin-bottom: 1.25rem !important;
+    }
+</style>
+{% endblock %}
 
 {% block main %}
 <div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow-sm border-0">
+        <div class="col-lg-7 col-md-9">
+            <div class="card">
                 <div class="card-body p-4">
-                    <h4 class="text-primary mb-4">
-                        <i class="bi bi-file-earmark-plus me-2"></i> {% trans "Yangi maqola qo'shish" %}
+                    <h4 class="text-primary mb-4 fw-bold d-flex align-items-center">
+                        <i class="bi bi-file-earmark-plus me-2 fs-3"></i> {% trans "Yangi maqola qo'shish" %}
                     </h4>
 
-                    <form method="post" enctype="multipart/form-data">
+                    <form method="post" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
 
-                        {# Asosiy maqola formasi #}
                         {% for field in form %}
-                        <div class="mb-3">
-                            <label class="form-label">{{ field.label }}</label>
-                            {{ field }}
+                        <div class="mb-4">
+                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                             {% if field.errors %}
-                            <div class="text-danger small">{{ field.errors.0 }}</div>
+                                {{ field|add_class:"custom-input error" }}
+                                <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                            {% else %}
+                                {{ field|add_class:"custom-input" }}
                             {% endif %}
                         </div>
                         {% endfor %}
 
-                        {# Rasmlar yuklash maydoni #}
                         {% if image_form.images %}
-                        <div class="mb-3">
-                            <label class="form-label">{{ image_form.images.label }}</label>
-                            {{ image_form.images }}
-                            {% if image_form.images.errors %}
-                            <div class="text-danger small">{{ image_form.images.errors.0 }}</div>
-                            {% endif %}
+                        <div class="mb-4">
+                            <label class="form-label" for="id_images">{{ image_form.images.label }}</label>
+                            <div class="file-select-wrapper" tabindex="0" role="button" aria-label="Fayl tanlash maydoni">
+                                <span class="file-select-text" id="file-display">{% trans 'Fayl tanlanmagan' %}</span>
+                                <button type="button" class="file-select-button" aria-hidden="true">{% trans 'Tanlash' %}</button>
+                                {{ image_form.images }}
+                            </div>
                         </div>
+                        {% if image_form.images.errors %}
+                            <div class="text-danger small mt-1">{{ image_form.images.errors.0 }}</div>
+                        {% endif %}
                         {% endif %}
 
-                        {# Mavjud rasmlar va o‘chirish checkbox'lari #}
                         {% if image_form.fields.delete_images.choices %}
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label">{{ image_form.delete_images.label }}</label>
-                            <div class="border rounded p-3" style="max-height: 300px; overflow-y: auto;">
+                            <div class="border rounded p-3" style="max-height: 280px; overflow-y: auto;">
                                 {% for checkbox in image_form.delete_images %}
-                                <div class="form-check mb-2">
+                                <label class="form-check-custom">
                                     {{ checkbox.tag }}
-                                    <label class="form-check-label">
-                                        {{ checkbox.choice_label }}
-                                    </label>
-                                </div>
+                                    <span class="checkmark"></span>
+                                    {{ checkbox.choice_label }}
+                                </label>
                                 {% endfor %}
                             </div>
                             {% if image_form.delete_images.errors %}
-                            <div class="text-danger small">{{ image_form.delete_images.errors.0 }}</div>
+                            <div class="text-danger small mt-1">{{ image_form.delete_images.errors.0 }}</div>
                             {% endif %}
                         </div>
                         {% endif %}
 
-
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit" class="btn btn-primary w-100 fw-semibold mt-3">
                             <i class="bi bi-upload me-1"></i> {% trans "Saqlash" %}
                         </button>
                     </form>
@@ -68,4 +231,41 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+  const filesSelectedText = "{% trans '%(count)d ta fayl tanlandi' %}";
+  const fileNotSelectedText = "{% trans 'Fayl tanlanmagan' %}";
+
+  function translateFileCount(count) {
+    return filesSelectedText.replace('%(count)d', count);
+  }
+
+  const fileInput = document.getElementById('id_images');
+  const fileSelectButton = document.querySelector('.file-select-button');
+  const fileDisplayText = document.getElementById('file-display');
+
+  if (fileInput && fileSelectButton && fileDisplayText) {
+    fileSelectButton.addEventListener('click', () => fileInput.click());
+    fileSelectButton.addEventListener('keydown', (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      const count = fileInput.files.length;
+
+      if (count === 0) {
+        fileDisplayText.textContent = fileNotSelectedText;
+      } else if (count === 1) {
+        fileDisplayText.textContent = fileInput.files[0].name;
+      } else {
+        fileDisplayText.textContent = translateFileCount(count);
+      }
+    });
+  }
+</script>
 {% endblock %}

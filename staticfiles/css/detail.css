@@ -1,10 +1,26 @@
+:root {
+    --bg-color: #e6f0ff;
+    --text-color-muted: #666666;
+    --card-bg: #ffffff;
+    --border-light: #ddd;
+    --border-lighter: #eee;
+    --primary-blue: #1DA1F2;
+    --footer-text: #0d47a1;
+    --border-footer: #ccc;
+    --shadow-light: rgba(0, 0, 0, 0.05);
+    --shadow-medium: rgba(0, 0, 0, 0.1);
+    --shadow-strong: rgba(0, 0, 0, 0.15);
+}
+
+/* Base reset */
 html,
 body {
     height: 100%;
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: #e6f0ff;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
     user-select: none;
+    color: #333;
 }
 
 body {
@@ -15,72 +31,145 @@ body {
 
 main {
     flex: 1;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
 }
 
+/* Author box */
 .author-box {
-    background: #fff;
-    padding: 16px;
-    border-radius: 12px;
+    background: var(--card-bg);
+    padding: 18px 20px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-    margin-bottom: 24px;
+    gap: 16px;
+    box-shadow: 0 4px 12px var(--shadow-light);
+    margin-bottom: 28px;
+    transition: box-shadow 0.3s ease;
+}
+
+.author-box:hover {
+    box-shadow: 0 8px 24px var(--shadow-medium);
 }
 
 .author-box img {
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1.5px solid #ddd;
+    border: 2px solid var(--border-light);
+    box-shadow: 0 2px 8px var(--shadow-light);
 }
 
 .author-box .username {
-    font-size: 0.9rem;
-    color: #666;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color-muted);
+    display: flex;
+    align-items: center;
 }
 
 .verified-badge i {
-    color: #1DA1F2;
-    margin-left: 4px;
+    color: var(--primary-blue);
+    margin-left: 6px;
+    font-size: 1.1rem;
 }
 
+/* Carousel images */
 .carousel-inner img {
     height: 450px;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px var(--shadow-medium);
+    transition: transform 0.3s ease;
 }
 
+.carousel-inner img:hover {
+    transform: scale(1.03);
+}
+
+/* Article text */
 .article-text {
-    background: #fff;
-    border-radius: 12px;
-    padding: 24px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 28px 32px;
     margin-top: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 6px 20px var(--shadow-strong);
+    line-height: 1.7;
+    font-size: 1.05rem;
+    color: #2c2c2c;
+    letter-spacing: 0.02em;
+    user-select: text;
 }
 
-footer {
-    background-color: #ffffff;
-    padding: 24px 12px;
-    font-size: 0.95rem;
-    color: #0d47a1;
-    text-align: center;
-    border-top: 1px solid #ccc;
-}
-
-a {
-    text-decoration: none !important;
-}
-
+/* Comments section */
 .comment {
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid #eee;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--primary-blue);
+    background-color: #f9fbff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px var(--shadow-light);
+    transition: background-color 0.3s ease;
+}
+
+.comment:hover {
+    background-color: #e7f1ff;
 }
 
 .comment:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+/* Footer */
+footer {
+    background-color: var(--card-bg);
+    padding: 24px 12px;
+    font-size: 0.95rem;
+    color: var(--footer-text);
+    text-align: center;
+    border-top: 1px solid var(--border-footer);
+}
+
+/* Links */
+a {
+    text-decoration: none !important;
+    color: var(--primary-blue);
+    transition: color 0.3s ease;
+}
+
+a:hover,
+a:focus {
+    color: var(--primary-blue);
+    text-decoration: underline;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    main {
+        margin: 1rem;
+        padding: 0 0.5rem;
+    }
+
+    .author-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 16px;
+    }
+
+    .author-box img {
+        width: 56px;
+        height: 56px;
+    }
+
+    .article-text {
+        padding: 20px 16px;
+        font-size: 1rem;
+    }
+
+    .carousel-inner img {
+        height: 300px;
+    }
 }

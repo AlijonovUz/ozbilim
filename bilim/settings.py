@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'manager.apps.ManagerConfig',
     'accounts.apps.AccountsConfig',
     'bot.apps.BotConfig',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
